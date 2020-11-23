@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cryptic project{% endblock %}
+
+{% block stylesheet %}
+    <style>
+        input, textarea {
+            color: #FFFFFF !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'class': 'text-white'}}) }}
+    <div class="row">
+        <div class="col-10 offset-1">
+            {{ form_row(form.text, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-10 offset-1">
+            {{ form_row(form.key, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-10 offset-1">
+            {{ form_row(form.checksum, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    </div>
+    <br>
+    <div class="row justify-content-center">
+        {{ form_row(form.submit, {'attr': {'class': 'btn btn-lg btn-primary'}}) }}
+    </div>
+    {{ form_end(form) }}
+
+    {% if result is defined and result is not null %}
+        <br><br>
+        <div class="row justify-content-center">
+            <p>
+                {{ result }}
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

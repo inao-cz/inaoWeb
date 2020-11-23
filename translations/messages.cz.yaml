@@ -1,0 +1,14 @@
+title:
+  dash: Dashboard
+  index: Hlavní stránka
+  redirect: Zkracovač
+  register: Registrace
+  login: Přihlášení
+  admin: Administrace
+  user:
+    services: Služby
+
+user:
+  dash:
+    date: Datum
+    action: Akce

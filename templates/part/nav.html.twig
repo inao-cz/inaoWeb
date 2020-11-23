@@ -1,0 +1,39 @@
+<header>
+    <nav class="navbar navbar-expand navbar-dark bg-dark text-white sticky-top">
+        <a class="navbar-brand" href="{{ path('index') }}">inao</a>
+        <ul class="float-left navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{{ path('links-index') }}">Redirect</a></li>
+        </ul>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item dropleft">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ app.user.username }}</a>
+                        <div class="dropdown-menu blue-grey darken-2">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="dropdown-item white-text" href="{{ path('admin-dashboard') }}">{{ 'title.admin'|trans }}</a>
+                                <div class="dropdown-divider"></div>
+                            {% endif %}
+                            <a class="dropdown-item white-text" href="{{ path('user-index') }}">{{ 'title.dash'|trans }}</a>
+                            {% if is_granted('ROLE_INVITE') %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item white-text" href="#">Invites</a>
+                            {% endif %}
+                            {% if is_granted('ROLE_IMAGES') %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item white-text" href="#">Image server</a>
+                            {% endif %}
+                            {% if is_granted('ROLE_LINKS') %}
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item white-text" href="#">Link shortener</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-link"><a class="nav-link" href="{{ path('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>

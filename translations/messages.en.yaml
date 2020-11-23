@@ -1,0 +1,14 @@
+title:
+  dash: Dashboard
+  index: Home
+  redirect: Redirect
+  register: Register
+  login: Login
+  admin: Admin
+  user:
+    services: Services
+
+user:
+  dash:
+    date: Date
+    action: Action

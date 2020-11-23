@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.register'|trans }}{% endblock %}
+
+{% block content %}
+
+<div class="justify-content-center">
+    <p class="h4 mb-4 text-center">Register</p>
+    {{ form_start(reg) }}
+    <div class="row">
+        <div class="col-6 offset-3">
+            {{ form_row(reg.username, {attr: {'class':'mb-4 form-control'}}) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            {{ form_row(reg.email, {attr: {'class':'mb-4 form-control disabled'}}) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="row">
+                <div class="col-6">
+                    {{ form_row(reg.password.first, {attr: {'class':'mb-4 form-control'}}) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(reg.password.second, {attr: {'class':'mb-4 form-control'}}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2 offset-5">
+            {{ form_row(reg.submit, {attr: {'class': 'btn btn-block my-4'}}) }}
+        </div>
+    </div>
+    {{ form_end(reg) }}
+</div>
+{% endblock %}

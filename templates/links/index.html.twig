@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ 'title.redirect'|trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <h4>Welcome to the inao redirect.</h4>
+    </div>
+    <div class="row justify-content-center">
+        <p>Here you will find public redirects</p>
+    </div>
+    <div class="row">
+        <div class="col-10 offset-1">
+            <table class="table white-text">
+                <thead>
+                <tr>
+                    <th>Link ID</th>
+                    <th>Creator</th>
+                    <th>Open</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for linkObj in links %}
+                    <tr>
+                        <td>{{ linkObj.name }}</td>
+                        <td>{{ linkObj.creator }}</td>
+                        <td><a class="btn btn-cyan btn-primary waves-effect" href="{{ path('links-go', {'id': linkObj.name })}}" target="_blank">Open</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
