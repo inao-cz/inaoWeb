@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.admin.invite'|trans }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-8 offset-2">
+            {{ form_row(form.email, {'attr': {'class': 'form-control mb-4'}}) }}
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-8 offset-2 justify-content-center">
+                {{ form_row(form.groups, {'attr': {'class': 'custom-select mb-4'}}) }}
+            </div>
+        {% endif %}
+        <div class="col-8 offset-2 justify-content-center text-center">
+            {{ form_row(form.submit, {'attr': {'class': 'btn'}}) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

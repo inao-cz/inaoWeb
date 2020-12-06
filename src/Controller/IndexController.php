@@ -20,7 +20,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/image/render/{image}", name="index-image-render")
+     * @Route("/image/{image}", name="index-image-render")
      * @param $image
      * @return Response
      */
@@ -34,23 +34,19 @@ class IndexController extends AbstractController
             exit();
         }
         $filesystem = new Filesystem();
-        $path = "../images/user/" . $image->getUser()->getUsername() . "/" . $image->getName() . "." . $image->getExt();
+        $path = "../img/www/" . $image->getUploaded()->format("Y/m/") . $image->getUser()->getUsername() . "/" . $image->getName() . "." . $image->getExt();
         if(!($filesystem->exists($path))){
             $this->getDoctrine()->getManager()->remove($image);
             $this->getDoctrine()->getManager()->flush();
             exit("Image doesn't exist");
         }
-        return $this->render('image/view.html.twig', ['image' => "data:" . $image->getExt() . ";base64," . base64_encode(file_get_contents($path))]);
+        $url = "https://img.inao.xn--6frz82g/" . $image->getUploaded()->format("Y/m/") . $image->getUser()->getUsername() . "/" . $image->getName() . "." . $image->getExt();
+        return $this->render('image/view.html.twig', ['image' => $url]);
     }
-
-    /**
-     * @Route("/test", name="test")
-     * @param MailUtil $util
-     * @return Response
-     */
+    
     public function test(MailUtil $util): Response
     {
-        $test = $util->sendEmail('register', 'Registration on website', 'onemoreplayscz@gmail.com', "https://test.com");
+        //$test = $util->sendEmail('register', 'Registration on website', 'onemoreplayscz@gmail.com', "https://test.com");
         return $this->redirectToRoute('index');
     }
 }

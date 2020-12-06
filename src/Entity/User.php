@@ -53,7 +53,7 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="User", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $images;
 

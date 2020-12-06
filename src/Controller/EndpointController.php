@@ -45,17 +45,20 @@ class EndpointController extends AbstractController
         /** @var File $target */
         $target = $request->files->get('sharex');
         $type = $target->guessExtension();
-        $sharexdir = '../images/user/' . $user->getUsername() . "/";
+        $date = new DateTime('now');
+        $sharexdir = '../img/www/' . $date->format("Y/m/") . $user->getUsername() . "/";
 
         if (!$filesystem->exists($sharexdir)) {
-            $filesystem->mkdir($sharexdir, 744);
+            $filesystem->mkdir($sharexdir, 755);
         }
         $filesystem->copy($target, $sharexdir . $filename . "." . $type, true);
 
         $log = new Log();
         $log->setAction("Uploaded new image file.")->setApiKey($user->getApikey())->setDate(new DateTime());
         $image = new Image();
-        $image->setUser($user)->setName($filename)->setExt($type);
+        $image->setUser($user);
+            $image->setName($filename)->setExt($type);
+        $image->setUploaded($date);
         $dm = $this->getDoctrine()->getManager();
         $dm->persist($image);
         $dm->persist($log);
@@ -63,4 +66,16 @@ class EndpointController extends AbstractController
         exit($this->generateUrl('index-image-render', ['image' => $image->getName()]));
     }
 
+    /**
+     * @Route("captcha/create/", name="captcha-create", methods={"POST"})
+     * @param Request $request
+     */
+    public function captchaEndpoint(Request $request)
+    {
+        $json = $request->get('request');
+        if($json === null){
+            exit("-1");
+        }
+        $json = json_decode($json);
+    }
 }

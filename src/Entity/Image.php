@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ImageRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,7 +22,12 @@ class Image
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="images")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $User;
+    private $user;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $uploaded;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,12 +46,12 @@ class Image
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $User): self
     {
-        $this->User = $User;
+        $this->user = $User;
 
         return $this;
     }
@@ -77,4 +83,21 @@ class Image
     {
         $this->ext = $ext;
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getUploaded(): DateTime
+    {
+        return $this->uploaded;
+    }
+
+    /**
+     * @param DateTime $uploaded
+     */
+    public function setUploaded(DateTime $uploaded): void
+    {
+        $this->uploaded = $uploaded;
+    }
+
 }

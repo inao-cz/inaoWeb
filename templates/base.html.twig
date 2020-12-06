@@ -1,10 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% if app.request.get("_route") == "index-image-render" %}
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="og:type" content="image">
+        <meta property="og:image" content="{{ image }}">
+        <meta property="og:title" content="inao.移动">
+        <meta property="theme-color" content="#81F841">
+    {% endif %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">

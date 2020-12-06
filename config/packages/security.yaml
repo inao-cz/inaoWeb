@@ -42,8 +42,6 @@ security:
          - { path: ^/user/invite, role: ROLE_INVITE }
 
     role_hierarchy:
-        ROLE_LINKS: ROLE_LINKS
-        ROLE_IMAGES: ROLE_IMAGES
-        ROLE_INVITE: ROLE_INVITE
         ROLE_ALL_SERVICES: [ROLE_LINKS, ROLE_IMAGES, ROLE_INVITE]
+        ROLE_VIP: ROLE_ALL_SERVICES
         ROLE_ADMIN: ROLE_ALL_SERVICES
