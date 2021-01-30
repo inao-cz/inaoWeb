@@ -57,7 +57,7 @@ class EndpointController extends AbstractController
         $log->setAction("Uploaded new image file.")->setApiKey($user->getApikey())->setDate(new DateTime());
         $image = new Image();
         $image->setUser($user);
-            $image->setName($filename)->setExt($type);
+        $image->setName($filename)->setExt($type);
         $image->setUploaded($date);
         $dm = $this->getDoctrine()->getManager();
         $dm->persist($image);
@@ -67,13 +67,13 @@ class EndpointController extends AbstractController
     }
 
     /**
-     * @Route("captcha/create/", name="captcha-create", methods={"POST"})
+     * @Route("captcha/", name="captcha-create", methods={"POST"})
      * @param Request $request
      */
     public function captchaEndpoint(Request $request)
     {
         $json = $request->get('request');
-        if($json === null){
+        if ($json === null) {
             exit("-1");
         }
         $json = json_decode($json);
