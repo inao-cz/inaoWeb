@@ -1,10 +1,10 @@
 title:
   dash: Dashboard
-  index: Hlavní stránka
-  redirect: Zkracovač
-  register: Registrace
-  login: Přihlášení
-  admin: Administrace
+  index: Home
+  redirect: Redirect
+  register: Register
+  login: Login
+  admin: Admin
   user:
     services: Služby
 

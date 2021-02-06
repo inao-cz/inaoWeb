@@ -1,0 +1,22 @@
+{% macro menuItem(name, url, subitems) %}
+    {% apply spaceless %}
+        {% set subitems = subitems|default({}) %}
+        {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+        {% set isActive = currentUrl == url %}
+
+        {% for name, suburl in subitems %}
+            {% set isActive = not isActive and currentUrl == suburl %}
+        {% endfor %}
+
+        <li>
+            <a {% if isActive %}class="active"{% else %}href="{{ url }}"{% endif %}{% if subitems|length > 0 %} class="has-sub-menu"{% endif %}>{{ name|trans() }}</a>
+            {% if subitems|length > 0 %}
+                <ul class="main-sub-menu">
+                    {% for name, url in subitems %}
+                        {{ _self.menuItem(name, url) }}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endapply %}
+{% endmacro %}

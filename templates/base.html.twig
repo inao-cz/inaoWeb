@@ -12,42 +12,20 @@
         <meta property="og:title" content="inao.移动">
         <meta property="theme-color" content="#81F841">
     {% endif %}
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.2/css/all.css">
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('navbar') }}
     {% block imports %}{% endblock %}
     {% block stylesheet %}{% endblock %}
     <title>inao | {% block title %}{% endblock %}</title>
-    <style>
-        i {
-            height: 128px !important;
-            width: 128px !important;
-        }
-
-        i:hover {
-            color: #5eb5e0;
-            transition: .3s ease-in-out;
-        }
-        .dropdown-item:hover {
-            background-color: #78909c !important;
-        }
-    </style>
 </head>
 <body class="blue-grey darken-3 white-text">
 {{ include('part/nav.html.twig') }}
-<div class="container-fluid">
-    <br>
-    {% block content %}{% endblock %}
-</div>
+{% block content %}{% endblock %}
 {% block javascript %}{% endblock %}
 <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
 </body>
 </html>
