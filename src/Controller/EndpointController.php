@@ -48,8 +48,11 @@ class EndpointController extends AbstractController
         $date = new DateTime('now');
         $sharexdir = '../img/www/' . $date->format("Y/m/") . $user->getUsername() . "/";
 
+        if(!$filesystem->exists($sharexdir."..")){
+            $filesystem->mkdir($sharexdir."..", 0755);
+        }
         if (!$filesystem->exists($sharexdir)) {
-            $filesystem->mkdir($sharexdir, 755);
+            $filesystem->mkdir($sharexdir, 0755);
         }
         $filesystem->copy($target, $sharexdir . $filename . "." . $type, true);
 
