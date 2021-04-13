@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\ApiKey;
+use App\Entity\Captcha;
 use App\Entity\Invite;
 use App\Entity\User;
+use App\Form\RecaptchaType;
 use App\Form\RegistrationType;
 use App\Util\UserUtil;
 use DateTime;
@@ -97,6 +99,28 @@ class SecurityController extends AbstractController
 
         return $this->render('user/register.html.twig', [
             'reg' => $form->createView()
+        ]);
+    }
+    /**
+     * @Route("/captcha/{id}", name="security-captcha")
+     */
+    public function onCaptchaRequest(Request $request, $id)
+    {
+        $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy(['captchaId' => $id]);
+        if($captcha === null) {
+            return $this->redirectToRoute('index');
+        }
+        $form = $this->createForm(RecaptchaType::class, $captcha);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $captcha->setCaptcha(true);
+            $this->getDoctrine()->getManager()->persist($captcha);
+            $this->getDoctrine()->getManager()->flush();
+
+        }
+        return $this->render('security/captcha.html.twig', [
+            'form' => $form->createView(),
+            'solved' => $captcha->isCaptcha()
         ]);
     }
 }

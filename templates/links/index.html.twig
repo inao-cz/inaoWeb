@@ -1,36 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{ 'title.redirect'|trans }}
+    {{ 'title.redirect'|trans }}
 {% endblock %}
 
 {% block content %}
-    <div class="row justify-content-center">
+    <div class="text-center text-white">
         <h4>Welcome to the inao redirect.</h4>
     </div>
-    <div class="row justify-content-center">
+    <div class="text-center text-white">
         <p>Here you will find public redirects</p>
     </div>
-    <div class="row">
-        <div class="col-10 offset-1">
-            <table class="table white-text">
-                <thead>
-                <tr>
-                    <th>Link ID</th>
-                    <th>Creator</th>
-                    <th>Open</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for linkObj in links %}
-                    <tr>
-                        <td>{{ linkObj.name }}</td>
-                        <td>{{ linkObj.creator }}</td>
-                        <td><a class="btn btn-cyan btn-primary waves-effect" href="{{ path('links-go', {'id': linkObj.name })}}" target="_blank">Open</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <br>
+    <table class="table-auto text-white mx-auto overflow-x-hidden w-full whitespace-nowrap divide-y">
+        <thead class="bg-gray-400 text-black text-left uppercase">
+        <tr>
+            <th class="px-5 py-3">Link ID</th>
+            <th class="px-5 py-3">Creator</th>
+            <th class="px-5 py-3">Open</th>
+        </tr>
+        </thead>
+        <tbody class="bg-gray-800">
+        {% for linkObj in links %}
+            <tr>
+                <td class="px-5 py-3">{{ linkObj.name }}</td>
+                <td>{{ linkObj.creator }}</td>
+                <td><a class="btn btn-cyan btn-primary waves-effect"
+                       href="{{ path('links-go', {'id': linkObj.name }) }}" target="_blank">Open</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

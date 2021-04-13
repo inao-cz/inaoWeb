@@ -13,4 +13,11 @@ class EndpointUtil
         }
         return $key;
     }
+
+    /**
+     * @param string $id
+     */
+    public function checkIfIdIsUnique($id){
+//        $ids = $this
+    }
 }

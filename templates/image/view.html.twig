@@ -5,12 +5,8 @@
 {% block content %}
     {% if error is defined %}
     {% else %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-10 text-center justify-content-center offset-1" style="display: flex;">
-                    <img src="{{ image }}" alt="image" style="max-height: 100%; max-width: 100%;">
-                </div>
-            </div>
+        <div class="justify-center" style="display: flex;">
+            <img src="{{ image }}" alt="image" style="max-height: 100%; max-width: 100%;">
         </div>
     {% endif %}
 {% endblock %}

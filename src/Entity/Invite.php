@@ -19,6 +19,7 @@ class Invite
     private $id;
 
     /**
+     * @var mixed
      * @ORM\Column(type="string", length=128)
      */
     private $code;
@@ -48,17 +49,24 @@ class Invite
      */
     private $usedBy;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getCode()
     {
         return $this->code;
     }
 
-    public function setCode(string $code): self
+    /**
+     * @param $code
+     * @return $this
+     */
+    public function setCode($code): self
     {
         $this->code = $code;
 

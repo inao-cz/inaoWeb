@@ -19,9 +19,12 @@
     {% block stylesheet %}{% endblock %}
     <title>inao | {% block title %}{% endblock %}</title>
 </head>
-<body class="blue-grey darken-3 white-text">
+<body class="blue-grey darken-3 white-text h-screen">
 {{ include('part/nav.html.twig') }}
-{% block content %}{% endblock %}
+{% block message %}{% endblock %}
+<div class="container mx-auto pt-10">
+    {% block content %}{% endblock %}
+</div>
 {% block javascript %}{% endblock %}
 <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

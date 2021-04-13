@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ApiKey;
+use App\Entity\Captcha;
 use App\Entity\Image;
 use App\Entity\Log;
 use App\Util\EndpointUtil;
@@ -73,12 +74,18 @@ class EndpointController extends AbstractController
      * @Route("captcha/", name="captcha-create", methods={"POST"})
      * @param Request $request
      */
-    public function captchaEndpoint(Request $request)
+    public function captchaEndpoint(Request $request, EndpointUtil $endpointUtil)
     {
-        $json = $request->get('request');
-        if ($json === null) {
-            exit("-1");
+        $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        if($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')){
+            if($requestJson['type'] === 0){
+
+            }else if($requestJson['type'] === 1){
+
+            }else{
+                exit("invalid");
+            }
         }
-        $json = json_decode($json);
+        return $this->render("base.html.twig");
     }
 }

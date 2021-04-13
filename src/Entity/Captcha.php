@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CaptchaRepository;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
 /**
  * @ORM\Entity(repositoryClass=CaptchaRepository::class)
@@ -12,16 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Captcha
 {
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Id
+     * @ORM\Column(type="bigint")
      */
     private $discordId;
-
-    /**
-     * @var null|DateTime
-     * @ORM\Column(type="date")
-     */
-    private $dateCreated;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,7 +26,7 @@ class Captcha
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isSolved;
+    private $captcha;
 
     /**
      * @return mixed
@@ -48,22 +42,6 @@ class Captcha
     public function setDiscordId($discordId): void
     {
         $this->discordId = $discordId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * @param mixed $dateCreated
-     */
-    public function setDateCreated($dateCreated): void
-    {
-        $this->dateCreated = $dateCreated;
     }
 
     /**
@@ -85,18 +63,17 @@ class Captcha
     /**
      * @return bool
      */
-    public function isSolved(): bool
+    public function isCaptcha(): bool
     {
-        return $this->isSolved;
+        return $this->captcha;
     }
 
     /**
-     * @param bool $isSolved
+     * @param bool $captcha
      */
-    public function setIsSolved(bool $isSolved): void
+    public function setCaptcha(bool $captcha): void
     {
-        $this->isSolved = $isSolved;
+        $this->captcha = $captcha;
     }
-
 
 }
