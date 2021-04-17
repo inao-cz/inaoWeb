@@ -26,7 +26,7 @@ class Captcha
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $captcha;
+    private $captcha = false;
 
     /**
      * @return mixed

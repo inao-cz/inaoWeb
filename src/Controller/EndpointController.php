@@ -49,8 +49,8 @@ class EndpointController extends AbstractController
         $date = new DateTime('now');
         $sharexdir = '../img/www/' . $date->format("Y/m/") . $user->getUsername() . "/";
 
-        if(!$filesystem->exists($sharexdir."..")){
-            $filesystem->mkdir($sharexdir."..", 0755);
+        if (!$filesystem->exists($sharexdir . "..")) {
+            $filesystem->mkdir($sharexdir . "..", 0755);
         }
         if (!$filesystem->exists($sharexdir)) {
             $filesystem->mkdir($sharexdir, 0755);
@@ -77,15 +77,26 @@ class EndpointController extends AbstractController
     public function captchaEndpoint(Request $request, EndpointUtil $endpointUtil)
     {
         $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        if($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')){
-            if($requestJson['type'] === 0){
-
-            }else if($requestJson['type'] === 1){
-
-            }else{
-                exit("invalid");
+        $response = [];
+        if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
+            $captchaArray = [];
+            foreach ($requestJson['discordId'] as $id) {
+                $captcha = new Captcha();
+                $captcha->setDiscordId($id);
+                $captcha->setCaptchaId($endpointUtil->randomString());
+                $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
+                $captchaArray[] = $captcha;
+            }
+            if (count($captchaArray) > 0) {
+                $em = $this->getDoctrine()->getManager();
+                foreach ($captchaArray as $item) {
+                    $em->persist($item);
+                }
+                $em->flush();
             }
         }
-        return $this->render("base.html.twig");
+        return $this->render("empty.html.twig", [
+            'content' => json_encode($response, JSON_THROW_ON_ERROR)
+        ]);
     }
 }
