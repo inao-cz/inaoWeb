@@ -27,18 +27,17 @@ class EndpointController extends AbstractController
      * @param Request $request
      * @param EndpointUtil $endpointUtil
      */
-    public function imgEndpoint(Request $request, EndpointUtil $endpointUtil): void
+    public function imgEndpoint(Request $request, EndpointUtil $endpointUtil): \Symfony\Component\HttpFoundation\Response
     {
         $key = $request->request->get('key');
-        if (!$key) {
-            exit('-2');
-        }
+        if (!$key) return $endpointUtil->getUnauthorizedResponse();
+
         $user = $this->getDoctrine()->getRepository(ApiKey::class)->findOneBy([
             'apiKey' => $key
         ])->getUser();
-        if (!$user) {
-            exit('-1');
-        }
+
+        if (!$user) return $endpointUtil->getUnauthorizedResponse();
+
 
         $filesystem = new Filesystem();
 
@@ -94,9 +93,60 @@ class EndpointController extends AbstractController
                 }
                 $em->flush();
             }
-        }
+        } else return $endpointUtil->getUnauthorizedResponse();
+
         return $this->render("empty.html.twig", [
             'content' => json_encode($response, JSON_THROW_ON_ERROR)
         ]);
+    }
+
+    /**
+     * @Route("captchacheck/", name="captcha-check", methods={"POST"})
+     * @param Request $request
+     */
+    public function captchaCheckEndpoint(Request $request, EndpointUtil $endpointUtil)
+    {
+        $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $response = [];
+        if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
+            $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
+                'discordId' => $requestJson['discordId'][0]
+            ]);
+            if ($captcha !== null) {
+                $response[$requestJson['discordId'][0]] = $captcha->isCaptcha();
+            }
+            else {
+                $response[$requestJson['discordId'][0]] = false;
+            }
+        } else {
+            return $endpointUtil->getUnauthorizedResponse();
+        }
+
+        return $this->render("empty.html.twig", [
+            'content' => json_encode($response, JSON_THROW_ON_ERROR)
+        ]);
+    }
+
+    /**
+     * @Route("captchadelete/", name="captcha-delete", methods={"POST"})
+     * @param Request $request
+     */
+    public function captchaDeleteEndpoint(Request $request, EndpointUtil $endpointUtil)
+    {
+        $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
+            $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
+                'discordId' => $requestJson['discordId'][0]
+            ]);
+            if ($captcha !== null) {
+                $this->getDoctrine()->getManager()->remove($captcha);
+                $this->getDoctrine()->getManager()->flush();
+            }
+        } else {
+            return $endpointUtil->getUnauthorizedResponse();
+        }
+
+        return $this->render("empty.html.twig");
     }
 }

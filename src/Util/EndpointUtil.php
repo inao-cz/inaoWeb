@@ -2,6 +2,8 @@
 
 namespace App\Util;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class EndpointUtil
 {
     public function randomString(): string
@@ -19,5 +21,12 @@ class EndpointUtil
      */
     public function checkIfIdIsUnique($id){
 //        $ids = $this
+    }
+
+    public function getUnauthorizedResponse(): Response
+    {
+        $response = new Response();
+        $response->setStatusCode(403);
+        return $response;
     }
 }
