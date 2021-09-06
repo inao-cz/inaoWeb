@@ -64,7 +64,6 @@ class Invite
 
     /**
      * @param $code
-     * @return $this
      */
     public function setCode($code): self
     {

@@ -11,19 +11,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    /**
-     * @Route("/", name="index")
-     */
-    public function index(): Response
+    #[Route(path: '/', name: 'index')]
+    public function index() : Response
     {
         return $this->render('homepage/index.html.twig');
     }
 
     /**
-     * @Route("/image/{image}", name="index-image-render")
      * @param $image
      * @return Response
      */
+    #[Route(path: '/image/{image}', name: 'index-image-render')]
     public function renderImageAction($image = null)
     {
         if(!$image){

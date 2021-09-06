@@ -13,13 +13,12 @@
         <meta property="theme-color" content="#81F841">
     {% endif %}
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.2/css/all.css">
-    {{ encore_entry_link_tags('app') }}
-    {{ encore_entry_link_tags('navbar') }}
+    <link rel="stylesheet" href="https://unpkg.com/cirrus-ui">
     {% block imports %}{% endblock %}
     {% block stylesheet %}{% endblock %}
     <title>inao | {% block title %}{% endblock %}</title>
 </head>
-<body class="blue-grey darken-3 white-text h-screen">
+<body class="bg-blue-900 test-light h-screen">
 {{ include('part/nav.html.twig') }}
 {% block message %}{% endblock %}
 <div class="container mx-auto pt-10">
@@ -27,6 +26,7 @@
 </div>
 {% block javascript %}{% endblock %}
 <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cirrus-ui"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

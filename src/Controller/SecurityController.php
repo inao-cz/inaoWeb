@@ -20,43 +20,30 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/login", name="login")
-     * @param AuthenticationUtils $authenticationUtils
-     * @return Response
-     */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route(path: '/login', name: 'login')]
+    public function login(AuthenticationUtils $authenticationUtils) : Response
     {
         if($this->getUser()){
             return $this->redirectToRoute('index');
         }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logout(): void
+    #[Route(path: '/logout', name: 'logout')]
+    public function logout() : void
     {
-
     }
 
     /**
-     * @Route("/register/{invite}", name="register")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param UserUtil $util
      * @param $invite
-     * @return Response
      * @throws Exception
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, UserUtil $util, $invite = null):Response
+    #[Route(path: '/register/{invite}', name: 'register')]
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, UserUtil $util, $invite = null) : Response
     {
         if(!$invite){
             return $this->redirectToRoute('index');
@@ -76,12 +63,10 @@ class SecurityController extends AbstractController
         if($this->getUser()){
             return $this->redirectToRoute('index');
         }
-
         $user = new User();
         $user->setEmail($invite->getEmail());
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()){
             $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
             $user->setRoles($invite->getRoles());
@@ -96,14 +81,11 @@ class SecurityController extends AbstractController
 
             return $this->render('homepage/index.html.twig');
         }
-
         return $this->render('user/register.html.twig', [
             'reg' => $form->createView()
         ]);
     }
-    /**
-     * @Route("/captcha/{id}", name="security-captcha")
-     */
+    #[Route(path: '/captcha/{id}', name: 'security-captcha')]
     public function onCaptchaRequest(Request $request, $id)
     {
         $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy(['captchaId' => $id]);

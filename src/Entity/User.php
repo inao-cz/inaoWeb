@@ -67,9 +67,6 @@ class User implements UserInterface
         $this->images = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -85,10 +82,6 @@ class User implements UserInterface
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return $this
-     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -110,7 +103,6 @@ class User implements UserInterface
 
     /**
      * @param $roles
-     * @return $this
      */
     public function setRoles($roles): self
     {
@@ -131,10 +123,6 @@ class User implements UserInterface
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return $this
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -151,17 +139,11 @@ class User implements UserInterface
         return null;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
     public function setEmail(string $email): void
     {
         $this->email = $email;

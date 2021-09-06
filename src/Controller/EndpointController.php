@@ -12,31 +12,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class EndpointController
- * @package App\Controller
- *
- * @Route("/endpoint/", name="endpoint-")
- */
+#[Route("/endpoint/", name: "endpoint-")]
 class EndpointController extends AbstractController
 {
-    /**
-     * @Route("image", methods={"GET","POST"}, name="image")
-     * @param Request $request
-     * @param EndpointUtil $endpointUtil
-     */
-    public function imgEndpoint(Request $request, EndpointUtil $endpointUtil): \Symfony\Component\HttpFoundation\Response
+    #[Route('image', name: "image", methods: ["GET","POST"])]
+    public function imgEndpoint(Request $request, EndpointUtil $endpointUtil): Response
     {
         $key = $request->request->get('key');
-        if (!$key) return $endpointUtil->getUnauthorizedResponse();
+        if (!$key) {
+            return $endpointUtil->getUnauthorizedResponse();
+        }
 
         $user = $this->getDoctrine()->getRepository(ApiKey::class)->findOneBy([
             'apiKey' => $key
         ])->getUser();
 
-        if (!$user) return $endpointUtil->getUnauthorizedResponse();
+        if (!$user) {
+            return $endpointUtil->getUnauthorizedResponse();
+        }
 
 
         $filesystem = new Filesystem();
@@ -69,17 +65,18 @@ class EndpointController extends AbstractController
         exit($this->generateUrl('index-image-render', ['image' => $image->getName()]));
     }
 
-    /**
-     * @Route("captcha/", name="captcha-create", methods={"POST"})
-     * @param Request $request
-     */
-    public function captchaEndpoint(Request $request, EndpointUtil $endpointUtil)
+    #[Route("captcha/", name: "captcha-create", methods: ["POST"])]
+    public function captchaEndpoint(Request $request, EndpointUtil $endpointUtil): Response
     {
         $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $response = [];
         if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
             $captchaArray = [];
             foreach ($requestJson['discordId'] as $id) {
+                $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
+                    'discordId' => $requestJson['discordId'][0]
+                ]);
+                $response[$captcha->getDiscordId()] = $captcha?->getCaptchaId();
                 $captcha = new Captcha();
                 $captcha->setDiscordId($id);
                 $captcha->setCaptchaId($endpointUtil->randomString());
@@ -93,31 +90,6 @@ class EndpointController extends AbstractController
                 }
                 $em->flush();
             }
-        } else return $endpointUtil->getUnauthorizedResponse();
-
-        return $this->render("empty.html.twig", [
-            'content' => json_encode($response, JSON_THROW_ON_ERROR)
-        ]);
-    }
-
-    /**
-     * @Route("captchacheck/", name="captcha-check", methods={"POST"})
-     * @param Request $request
-     */
-    public function captchaCheckEndpoint(Request $request, EndpointUtil $endpointUtil)
-    {
-        $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $response = [];
-        if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
-            $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
-                'discordId' => $requestJson['discordId'][0]
-            ]);
-            if ($captcha !== null) {
-                $response[$requestJson['discordId'][0]] = $captcha->isCaptcha();
-            }
-            else {
-                $response[$requestJson['discordId'][0]] = false;
-            }
         } else {
             return $endpointUtil->getUnauthorizedResponse();
         }
@@ -127,11 +99,27 @@ class EndpointController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("captchadelete/", name="captcha-delete", methods={"POST"})
-     * @param Request $request
-     */
-    public function captchaDeleteEndpoint(Request $request, EndpointUtil $endpointUtil)
+    #[Route("captchacheck/", name: "captcha-check", methods: ["POST"])]
+    public function captchaCheckEndpoint(Request $request, EndpointUtil $endpointUtil): Response
+    {
+        $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $response = [];
+        if ($requestJson['auth'] === $this->getParameter('app.bot_endpoint_auth')) {
+            $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
+                'discordId' => $requestJson['discordId'][0]
+            ]);
+            $response[$requestJson['discordId'][0]] = $captcha?->isCaptcha() ?? false;
+        } else {
+            return $endpointUtil->getUnauthorizedResponse();
+        }
+
+        return $this->render("empty.html.twig", [
+            'content' => json_encode($response, JSON_THROW_ON_ERROR)
+        ]);
+    }
+
+    #[Route("captchadelete/", name: "captcha-delete", methods: ["POST"])]
+    public function captchaDeleteEndpoint(Request $request, EndpointUtil $endpointUtil): Response
     {
         $requestJson = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 

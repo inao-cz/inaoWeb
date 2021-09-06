@@ -18,8 +18,6 @@ class MailUtil
 
     /**
      * MailUtil constructor.
-     * @param Swift_Mailer $swift_Mailer
-     * @param ContainerInterface $containerInterface
      */
     public function __construct(Swift_Mailer $swift_Mailer, ContainerInterface $containerInterface)
     {
@@ -28,15 +26,10 @@ class MailUtil
     }
 
     /**
-     * @param string $template
-     * @param string $subject
-     * @param string $to
      * @param string|null $link
-     * @return bool
      */
     public function sendEmail(string $template, string $subject, string $to, string $link = null): bool
     {
-        dump($this->swiftMailer->getTransport());
         $completeTemplate = "mail/" . $template . ".html.twig";
 
         $message = (new Swift_Message($subject))
@@ -46,11 +39,8 @@ class MailUtil
                 $this->containerInterface->get('twig')->render($completeTemplate, ['link' => $link]),
                 'text/html'
             );
-        dump($message);
         $fail = "";
         $result = $this->swiftMailer->send($message, $fail);
-        dump($fail);
-        dump($result);
         return $result !== 0;
     }
 }

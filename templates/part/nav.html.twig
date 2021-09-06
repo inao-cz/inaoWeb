@@ -1,21 +1,22 @@
 {% import 'part/macro/nav-item.html.twig' as macro %}
-<nav class="navbar" role="navigation">
-    <div class="nav-container">
-        <div class="brand">
-            <p>inao.</p>
-        </div>
-        <div class="items">
-            <ul>
-                {{ macro.menuItem('title.index', path('index')) }}
-                {{ macro.menuItem('title.redirect', path('links-index')) }}
-            </ul>
-            <ul class="nav-right">
-                {% if not app.user %}
-                    {{ macro.menuItem('title.login', path('login')) }}
-                {% else %}
-                    {{ macro.menuItem('nav.items.logout', path('logout'))}}
-                {% endif %}
-            </ul>
+
+<div class="bg-gray-800 header header-fixed u-unselectable header-animated">
+    <div class="header-brand">
+        <div class="nav-item no-hover">
+            <a><h6 class="title text-light">inao.</h6></a>
         </div>
     </div>
-</nav>
+    <div class="header-nav" id="header-menu">
+        <div class="nav-left">
+            {{ macro.menuItem('title.index', path('index')) }}
+            {{ macro.menuItem('title.redirect', path('links-index')) }}
+        </div>
+        <div class="nav-right">
+            {% if not app.user %}
+                {{ macro.menuItem('title.login', path('login')) }}
+            {% else %}
+                {{ macro.menuItem('nav.items.logout', path('logout')) }}
+            {% endif %}
+        </div>
+    </div>
+</div>

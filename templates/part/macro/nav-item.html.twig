@@ -8,8 +8,8 @@
             {% set isActive = not isActive and currentUrl == suburl %}
         {% endfor %}
 
-        <li>
-            <a {% if isActive %}class="active" {% else %} href="{{ url }}"{% endif %}{% if subitems|length > 0 %} class="has-sub-menu"{% endif %}>{{ name|trans() }}</a>
+        <div class="nav-item {% if isActive %} active {% endif %}">
+            <a class="text-light" {% if not isActive %}href="{{ url }}"{% endif %}{% if subitems|length > 0 %} {% endif %}>{{ name|trans() }}</a>
             {% if subitems|length > 0 %}
                 <ul class="main-sub-menu">
                     {% for name, url in subitems %}
@@ -17,6 +17,6 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-        </li>
+        </div>
     {% endapply %}
 {% endmacro %}

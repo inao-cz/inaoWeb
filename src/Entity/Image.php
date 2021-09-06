@@ -84,17 +84,11 @@ class Image
         $this->ext = $ext;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getUploaded(): DateTime
     {
         return $this->uploaded;
     }
 
-    /**
-     * @param DateTime $uploaded
-     */
     public function setUploaded(DateTime $uploaded): void
     {
         $this->uploaded = $uploaded;

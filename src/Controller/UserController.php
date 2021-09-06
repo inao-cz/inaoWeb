@@ -19,28 +19,21 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class UserController
  * @package App\Controller
- * @Route("/user", name="user-")
  * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
+#[Route(path: '/user', name: 'user-')]
 class UserController extends AbstractController
 {
-
-    /**
-     * @Route("/", name="index")
-     * @return RedirectResponse
-     */
-    public function index(): RedirectResponse
+    #[Route(path: '/', name: 'index')]
+    public function index() : RedirectResponse
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('user-dashboard-index');
         }
         return $this->redirectToRoute('login');
     }
-
-    /**
-     * @Route("/dash/", name="dashboard-index")
-     */
-    public function dashboardAction(): Response
+    #[Route(path: '/dash/', name: 'dashboard-index')]
+    public function dashboardAction() : Response
     {
         $history = $this->getDoctrine()->getRepository(Log::class)->getHistory($this->getUser()->getApiKey());
         $parsedHistory = [];
@@ -55,15 +48,11 @@ class UserController extends AbstractController
             'apiKey' => $this->getUser()->getApiKey()->getApiKey()
         ]);
     }
-
     /**
-     * @Route("/invite/", name="invite")
-     * @param Request $request
-     * @param EndpointUtil $endpointUtil
-     * @param MailUtil $mailUtil
      * @return Response
      * @IsGranted("ROLE_INVITE")
      */
+    #[Route(path: '/invite/', name: 'invite')]
     public function inviteUserAction(Request $request, EndpointUtil $endpointUtil, MailUtil $mailUtil)
     {
         $invite = new Invite();
@@ -83,11 +72,10 @@ class UserController extends AbstractController
         }
         return $this->render('admin/invite.html.twig', ['form' => $form->createView()]);
     }
-
     /**
-     * @Route("/image/config", name="image-config")
      * @IsGranted("ROLE_IMAGES")
      */
+    #[Route(path: '/image/config', name: 'image-config')]
     public function viewImageConfig()
     {
         /** @var ApiKey $apiKey */

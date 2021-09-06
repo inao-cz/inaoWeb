@@ -60,17 +60,11 @@ class Captcha
         $this->captchaId = $captchaId;
     }
 
-    /**
-     * @return bool
-     */
     public function isCaptcha(): bool
     {
         return $this->captcha;
     }
 
-    /**
-     * @param bool $captcha
-     */
     public function setCaptcha(bool $captcha): void
     {
         $this->captcha = $captcha;

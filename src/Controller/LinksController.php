@@ -9,28 +9,23 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class LinksController
  * @package App\Controller
- *
- * @Route("/link", name="links-")
  */
-
-class LinksController extends AbstractController{
-    /**
-     * @Route("/", name="index")
-     */
-    public function index(): Response
+#[Route(path: '/link', name: 'links-')]
+class LinksController extends AbstractController
+{
+    #[Route(path: '/', name: 'index')]
+    public function index() : Response
     {
         $doc = $this->getDoctrine()->getRepository(Links::class)->findBy([
             'public' => 1
         ]);
         return $this->render('links/index.html.twig', ['links' => $doc]);
     }
-
     /**
-     * @Route("/go/{id}", name="go")
      * @param $id
-     * @return Response
      */
-    public function redirectToLink($id = ""): Response
+    #[Route(path: '/go/{id}', name: 'go')]
+    public function redirectToLink($id = "") : Response
     {
         if(empty($id)){
             return $this->render('links/redirect.html.twig', ['message' => "No ID was provided. And because I'm not an magician, I cannot do anything :)", 'script' => ""]);

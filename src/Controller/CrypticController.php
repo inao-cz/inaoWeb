@@ -13,15 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class CrypticController
  * @package App\Controller
- * @Route("/cryptic", name="cryptic-")
  */
+#[\Symfony\Component\Routing\Annotation\Route(path: '/cryptic', name: 'cryptic-')]
 class CrypticController extends AbstractController
 {
-    /**
-     * @Route("/", name="decrypt")
-     * @param Request $request
-     * @return Response
-     */
+    #[Route("/", name: "decrypt")]
     public function decrypt(Request $request): Response
     {
         $data = new Cryptic();
