@@ -4,7 +4,9 @@ title:
   redirect: Redirect
   register: Register
   login: Login
-  admin: Admin
+  admin:
+    invite: Pozvánky
+    images: Screenshot
   user:
     services: Služby
 nav.items:
@@ -13,3 +15,10 @@ user:
   dash:
     date: Datum
     action: Akce
+  reg:
+    password_short: Heslo je moc krátké.
+    password_long: Heslo je moc dlouhé.
+  image:
+    service: Screenshot
+    list: List screenshotů
+    config: ShareX Config

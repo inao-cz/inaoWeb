@@ -1,22 +1,19 @@
 {% import 'part/macro/nav-item.html.twig' as macro %}
-
-<div class="bg-gray-800 header header-fixed u-unselectable header-animated">
-    <div class="header-brand">
-        <div class="nav-item no-hover">
-            <a><h6 class="title text-light">inao.</h6></a>
+<header class="appbar" style="background-color: #616161">
+    <div class="appbar-content">
+        <div class="appbar-brand">
+            inao.
         </div>
-    </div>
-    <div class="header-nav" id="header-menu">
-        <div class="nav-left">
+        <ul class="appbar-items appbar-item--start">
             {{ macro.menuItem('title.index', path('index')) }}
             {{ macro.menuItem('title.redirect', path('links-index')) }}
-        </div>
-        <div class="nav-right">
+        </ul>
+        <ul class="appbar-items appbar-item--end">
             {% if not app.user %}
                 {{ macro.menuItem('title.login', path('login')) }}
             {% else %}
-                {{ macro.menuItem('nav.items.logout', path('logout')) }}
+                <button data-trigger="drawer" data-drawer="#drawer">User navigation</button>
             {% endif %}
-        </div>
+        </ul>
     </div>
-</div>
+</header>

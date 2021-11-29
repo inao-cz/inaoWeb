@@ -24,15 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/user', name: 'user-')]
 class UserController extends AbstractController
 {
-    #[Route(path: '/', name: 'index')]
+    #[Route(path: '/', name: 'index'), IsGranted("IS_AUTHENTICATED_FULLY")]
     public function index() : RedirectResponse
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('user-dashboard-index');
-        }
-        return $this->redirectToRoute('login');
+        return $this->redirectToRoute('user-dashboard-index');
     }
-    #[Route(path: '/dash/', name: 'dashboard-index')]
+
+    #[Route(path: '/dash/', name: 'dashboard-index'), IsGranted("IS_AUTHENTICATED_FULLY")]
     public function dashboardAction() : Response
     {
         $history = $this->getDoctrine()->getRepository(Log::class)->getHistory($this->getUser()->getApiKey());
@@ -50,9 +48,8 @@ class UserController extends AbstractController
     }
     /**
      * @return Response
-     * @IsGranted("ROLE_INVITE")
      */
-    #[Route(path: '/invite/', name: 'invite')]
+    #[Route(path: '/invite/', name: 'invite'), Security("is_granted('ROLE_FULLY_AUTHENTICATED') and is_granted('ROLE_INVITE')")]
     public function inviteUserAction(Request $request, EndpointUtil $endpointUtil, MailUtil $mailUtil)
     {
         $invite = new Invite();
@@ -81,5 +78,11 @@ class UserController extends AbstractController
         /** @var ApiKey $apiKey */
         $apiKey = $this->getUser()->getApiKey();
         return $this->render('image/config.html.twig', ['config' => '{"Version":"13.1.0","Name":"inaoImageService","DestinationType":"ImageUploader","RequestMethod":"POST","RequestURL":"https://inao.xn--6frz82g/endpoint/image","Body":"MultipartFormData","Arguments":{"key": "' . $apiKey->getApiKey() . '"},"FileFormName": "sharex","URL": "https://inao.xn--6frz82g$response$"}']);
+    }
+
+    #[Route(path: '/image/list', name: 'image-list'), IsGranted("ROLE_IMAGES")]
+    public function viewImagesList(Request $request){
+
+        return $this->render('image/list.html.twig');
     }
 }

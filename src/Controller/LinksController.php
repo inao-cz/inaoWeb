@@ -21,11 +21,13 @@ class LinksController extends AbstractController
         ]);
         return $this->render('links/index.html.twig', ['links' => $doc]);
     }
+
     /**
-     * @param $id
+     * @param string $id
+     * @return Response
      */
     #[Route(path: '/go/{id}', name: 'go')]
-    public function redirectToLink($id = "") : Response
+    public function redirectToLink(string $id = "") : Response
     {
         if(empty($id)){
             return $this->render('links/redirect.html.twig', ['message' => "No ID was provided. And because I'm not an magician, I cannot do anything :)", 'script' => ""]);
@@ -42,6 +44,9 @@ class LinksController extends AbstractController
                 window.location.replace("' . $results->getTarget() . '")
                }, 3000)
         });';
+        $results->addRedirect();
+        $doc->getManager()->persist($results);
+        $doc->getManager()->flush();
         return $this->render('links/redirect.html.twig', ['message' => "Redirecting to location.", 'script' => base64_encode($script)]);
     }
 }

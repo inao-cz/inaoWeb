@@ -8,27 +8,30 @@
     {% if app.request.get("_route") == "index-image-render" %}
         <meta property="twitter:card" content="summary_large_image">
         <meta property="og:type" content="image">
-        <meta property="og:image" content="{{ image }}">
+        <meta property="og:image" content="{{ data }}">
         <meta property="og:title" content="inao.移动">
         <meta property="theme-color" content="#81F841">
     {% endif %}
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.2/css/all.css">
-    <link rel="stylesheet" href="https://unpkg.com/cirrus-ui">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tronic247/material/dist/css/material.min.css" rel="stylesheet" />
     {% block imports %}{% endblock %}
     {% block stylesheet %}{% endblock %}
     <title>inao | {% block title %}{% endblock %}</title>
 </head>
-<body class="bg-blue-900 test-light h-screen">
+<body class="text-white" style="background-color: #424242;">
 {{ include('part/nav.html.twig') }}
-{% block message %}{% endblock %}
-<div class="container mx-auto pt-10">
+{% if app.user %}
+    {{ include('part/drawer.html.twig') }}
+{% endif %}
+<div class="container">
     {% block content %}{% endblock %}
 </div>
 {% block javascript %}{% endblock %}
-<script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cirrus-ui"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<script
+        src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/tronic247/material/dist/js/material.min.js"></script>
 </body>
 </html>

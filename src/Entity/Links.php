@@ -20,12 +20,12 @@ class Links
     /**
      * @ORM\Column(type="text")
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $target;
+    private ?string $target;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -36,6 +36,11 @@ class Links
      * @ORM\Column(type="string", length=255)
      */
     private $creator;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $redirects;
 
     public function getId(): ?int
     {
@@ -88,5 +93,26 @@ class Links
         $this->creator = $creator;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRedirects()
+    {
+        return $this->redirects;
+    }
+
+    /**
+     * @param mixed $redirects
+     */
+    public function setRedirects($redirects): void
+    {
+        $this->redirects = $redirects;
+    }
+
+    public function addRedirect(): void
+    {
+        $this->redirects += 1;
     }
 }

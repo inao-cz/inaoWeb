@@ -7,6 +7,7 @@ use App\Util\MailUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
@@ -38,13 +39,21 @@ class IndexController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             exit("Image doesn't exist");
         }
+        $dataType = $this->getDataType($image->getExt());
         $url = "https://img.inao.xn--6frz82g/" . $image->getUploaded()->format("Y/m/") . $image->getUser()->getUsername() . "/" . $image->getName() . "." . $image->getExt();
-        return $this->render('image/view.html.twig', ['image' => $url]);
+        return $this->render('image/view.html.twig', ['data' => $url, 'type' => $dataType]);
     }
-    
-    public function test(MailUtil $util): Response
-    {
-        //$test = $util->sendEmail('register', 'Registration on website', 'onemoreplayscz@gmail.com', "https://test.com");
-        return $this->redirectToRoute('index');
+
+    private function getDataType(string $ext){
+        $extensions = [
+            'image' => ["jpg", "jpeg", "jfif", "jfif", "pjpeg", "pjp", "mpeg", "png", "gif"],
+            'text' => ["txt", "php", "html", "csv", "css", "xml"]
+        ];
+        foreach($extensions as $key => $row){
+            if(in_array($ext, $row)){
+                return $key;
+            }
+        }
+        return "image";
     }
 }

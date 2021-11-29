@@ -2,38 +2,76 @@
 
 {% block title %}{{ 'title.register'|trans }}{% endblock %}
 
-{% block content %}
+{% block stylesheet %}
+    <style>
+        .whitetext {
+            color: white !important;
+        }
 
-<div class="justify-content-center">
+        input {
+            color: white !important;
+        }
+        .error{
+            color: #FF5252;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% set errors = reg.vars.errors.form.getErrors(true) %}
+    <br>
     <p class="h4 mb-4 text-center">Register</p>
     {{ form_start(reg) }}
     <div class="row">
-        <div class="col-6 offset-3">
-            {{ form_row(reg.username, {attr: {'class':'mb-4 form-control'}}) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6 offset-3">
-            {{ form_row(reg.email, {attr: {'class':'mb-4 form-control disabled'}}) }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col"></div>
+        <div class="col">
+            {% if not reg.vars.valid %}
+                {% if errors|length %}
+                    <br>
+                        {% for error in errors %}
+                            <p class="text-center error">Error: {{ error.message|trans }}</p>
+                        {% endfor %}
+                {% endif %}
+                <br>
+            {% endif %}
+            <div>
+                <label class="textfield filled">
+                    {{ form_widget(reg.email) }}
+                    <span class="whitetext">{{ form_label(reg.email) }}</span>
+                </label>
+            </div>
+            <br>
+            <div>
+                <label class="textfield filled">
+                    {{ form_widget(reg.username) }}
+                    <span class="whitetext">{{ form_label(reg.username) }}</span>
+                </label>
+            </div>
+            <br>
             <div class="row">
-                <div class="col-6">
-                    {{ form_row(reg.password.first, {attr: {'class':'mb-4 form-control'}}) }}
+                <div class="col">
+                    <div>
+                        <label class="textfield filled">
+                            {{ form_widget(reg.password.first) }}
+                            <span class="whitetext">{{ form_label(reg.password.first) }}</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="col-6">
-                    {{ form_row(reg.password.second, {attr: {'class':'mb-4 form-control'}}) }}
+                <div class="col">
+                    <div>
+                        <label class="textfield filled">
+                            {{ form_widget(reg.password.second) }}
+                            <span class="whitetext">{{ form_label(reg.password.second) }}</span>
+                        </label>
+                    </div>
                 </div>
             </div>
+            <br>
+            <div class="text-center">
+                {{ form_row(reg.submit, {attr: {'class': 'btn square warning large'}}) }}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-2 offset-5">
-            {{ form_row(reg.submit, {attr: {'class': 'btn btn-block my-4'}}) }}
-        </div>
+        <div class="col"></div>
     </div>
     {{ form_end(reg) }}
-</div>
 {% endblock %}

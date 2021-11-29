@@ -4,44 +4,49 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-8 offset-2">
-            <div class="card u-center bg-dark">
-                <div class="content u-text-center text-gray-000">
-                    <h4>Login</h4>
-                    <form method="post" class="">
-                        {% if error %}
-                            <div class="bg-gray-800 text-center py-4 lg:px-4">
-                                <span class="font-semibold text-white-700 mr-2 text-left flex-auto">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
-                            </div>
-                        {% endif %}
-                        {% if app.user %}
-                            <div class="mb-3">
-                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                            </div>
-                        {% endif %}
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="inputUsername">Username</label>
-                                <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
-                                       class="bg-gray-700 text-gray-000"
-                                       required autofocus>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputPassword" class="text-left">Password</label>
-                                <input type="password" name="password" id="inputPassword"
-                                       class=" bg-gray-700 text-gray-000"
-                                       required>
-                            </div>
+        <div class="col"></div>
+        <div class="col">
+            <div class="card" style="background-color: #212121">
+                <div class="card-ripple-container ripple-e">
+                    <div class="card-content">
+                        <div class="center" style="text-align: center">
+                            <form method="post" class="">
+                                {% if error %}
+                                    <div class="bg-gray-800 text-center py-4 lg:px-4">
+                                        <span class="font-semibold text-white-700 mr-2 text-left flex-auto">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                                    </div>
+                                {% endif %}
+                                {% if app.user %}
+                                    <div class="mb-3">
+                                        You are logged in as {{ app.user.userIdentifier }}, <a
+                                                href="{{ path('app_logout') }}">Logout</a>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <label class="textfield filled">
+                                        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" required autofocus style="color: white">
+                                        <span style="color: white">Username</span>
+                                    </label>
+                                </div>
+                                <div class="row">
+                                    <label class="textfield filled">
+                                        <input type="password" name="password" id="inputPassword" required placeholder="" style="color: white">
+                                        <span style="color: white;">Password</span>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}"
+                                >
+                                <br>
+                                <button class="btn" type="submit">
+                                    Sign in
+                                </button>
+                            </form>
                         </div>
-                        <input type="hidden" name="_csrf_token"
-                               value="{{ csrf_token('authenticate') }}"
-                        >
-                        <button class="bg-indigo-700 btn btn-small text-gray-000" type="submit">
-                            Sign in
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="col"></div>
     </div>
 {% endblock %}

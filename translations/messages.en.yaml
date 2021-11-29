@@ -4,7 +4,9 @@ title:
   redirect: Redirect
   register: Register
   login: Login
-  admin: Admin
+  admin:
+    invite: Invites
+    image: Screenshots
   user:
     services: Services
 nav.items:
@@ -13,3 +15,10 @@ user:
   dash:
     date: Date
     action: Action
+  reg:
+    password_short: Password is too short.
+    password_long: Password is too long,
+  image:
+    service: Screenshots
+    list: List of screens
+    config: ShareX Config

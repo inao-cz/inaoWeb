@@ -1,0 +1,21 @@
+{% import 'part/macro/drawer-item.html.twig' as macro %}
+<div class="drawer-overlay" id="drawer" style="color: white;">
+    <div class="drawer modal" style="background-color: #757575; color: white;">
+        <h3>Welcome {{ app.user.username }}</h3>
+        <p>User Navigation</p>
+        <nav class="list small" style="background-color: #757575; color: white !important;">
+            {{ macro.drawerItem("title.dash", path('user-dashboard-index'), "<i class='fas fa-portal-exit'></i>") }}
+            {% if is_granted('ROLE_INVITE') %}
+                {{ macro.drawerItem("title.admin.invite", path('user-invite'), "<i class='fas fa-address-book'></i>") }}
+            {% endif %}
+            {% if is_granted('ROLE_IMAGES') %}
+            <hr>
+            {{ macro.drawerItem("user.image.list", path('user-image-list'), "<i class='fas fa-list-alt'></i>") }}
+            {{ macro.drawerItem("user.image.config", path('user-invite'), "<i class='fas fa-shovel'></i>") }}
+            {% endif %}
+            <hr>
+            <a class="list-item" data-trigger="drawer" data-drawer="#drawer"><i class="fas fa-times"></i> Close the navigation</a>
+            {{ macro.drawerItem("nav.items.logout", path('logout'), "<i class='fas fa-portal-exit'></i>") }}
+        </nav>
+    </div>
+</div>

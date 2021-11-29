@@ -5,8 +5,14 @@
 {% block content %}
     {% if error is defined %}
     {% else %}
-        <div class="justify-center" style="display: flex;">
-            <img src="{{ image }}" alt="image" style="max-height: 100%; max-width: 100%;">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="justify-center" style="display: flex;">
+                    {% if type == 'image' %}
+                        <img src="{{ data }}" alt="image" style="max-height: 100%; max-width: 100%;">
+                    {% endif %}
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

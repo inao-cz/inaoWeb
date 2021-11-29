@@ -7,7 +7,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -15,6 +17,7 @@ class RegistrationType extends AbstractType{
         $builder
             ->add('username')
             ->add('email', TextType::class, [
+                'disabled'=>true
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -25,8 +28,8 @@ class RegistrationType extends AbstractType{
                     new Length([
                         'min' => 8,
                         'max' => 256,
-                        'minMessage' => 'Mas moc kratky heslo.',
-                        'maxMessage' => 'Tyvole, mas dobrou pamet ne? Vazne, staci jen 256 znaku, i tak je to bezpecny az moc vole'
+                        'minMessage' => 'user.reg.password_short',
+                        'maxMessage' => 'user.reg.password_long'
                     ])
                 ]
             ])

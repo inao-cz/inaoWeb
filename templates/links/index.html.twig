@@ -4,8 +4,23 @@
     {{ 'title.redirect'|trans }}
 {% endblock %}
 
+{% block stylesheet %}
+<style>
+    tr:hover{
+        background-color: transparent !important;
+    }
+    .text{
+        text-align: center;
+    }
+    .table-container{
+        background-color: #212121;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <div class="u-text-center text-gray-000">
+    <br>
+    <div class="text">
         <div>
             <h4>Welcome to the inao redirect.</h4>
         </div>
@@ -14,9 +29,9 @@
         </div>
     </div>
     <br>
-    <div class="row u-text-center text-gray-000">
-        <div class="col-6 offset-3">
-            <table class="table borderless small">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <table class="table-container borderless small">
                 <thead>
                 <tr>
                     <th>Link ID</th>

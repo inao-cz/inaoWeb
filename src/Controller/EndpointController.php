@@ -76,8 +76,10 @@ class EndpointController extends AbstractController
                 $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy([
                     'discordId' => $requestJson['discordId'][0]
                 ]);
-                $response[$captcha->getDiscordId()] = $captcha?->getCaptchaId();
-                $captcha = new Captcha();
+                if($captcha === null){
+                    $captcha = new Captcha();
+                }
+                $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
                 $captcha->setDiscordId($id);
                 $captcha->setCaptchaId($endpointUtil->randomString());
                 $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
