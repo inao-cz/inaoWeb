@@ -6,63 +6,38 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     *
-     * @Assert\NotBlank
-     */
-    private $username;
+    #[ORM\Column(type: "string", length: 180, unique: true), Assert\NotBlank]
+    private string $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank
-     */
-    private $password;
+    #[ORM\Column(type: "string"), Assert\NotBlank]
+    private string $password;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     *
-     * @Assert\Email
-     * @Assert\NotNull
-     * @Assert\NotBlank
-     */
-    private $email;
+    #[ORM\Column(type: "string"), Assert\Email, Assert\NotNull, Assert\NotBlank]
+    private string $email;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $images;
+    #[ORM\Column(type: "integer")]
+    private int $inviteLimit = 0;
 
-    /**
-     * @ORM\OneToOne(targetEntity=ApiKey::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $apiKey;
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Image::class, cascade: ["persist", "remove"], orphanRemoval: true)]
+    private ArrayCollection $images;
 
-    public function __construct()
+    #[ORM\OneToOne(mappedBy: "user", targetEntity: ApiKey::class, cascade: ["persist", "remove"])]
+    private ApiKey $apiKey;
+
+    #[Pure] public function __construct()
     {
         $this->images = new ArrayCollection();
     }
@@ -103,6 +78,7 @@ class User implements UserInterface
 
     /**
      * @param $roles
+     * @return User
      */
     public function setRoles($roles): self
     {
@@ -156,9 +132,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return ApiKey
      */
-    public function getApiKey()
+    public function getApiKey(): ApiKey
     {
         return $this->apiKey;
     }
@@ -166,13 +142,13 @@ class User implements UserInterface
     /**
      * @param mixed $apiKey
      */
-    public function setApiKey($apiKey): void
+    public function setApiKey(string $apiKey): void
     {
         $this->apiKey = $apiKey;
     }
 
     /**
-     * @return Collection|Image[]
+     * @return Collection
      */
     public function getImages(): Collection
     {

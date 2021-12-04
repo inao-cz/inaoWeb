@@ -8,6 +8,7 @@ use App\Entity\Image;
 use App\Entity\Log;
 use App\Util\EndpointUtil;
 use DateTime;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -120,6 +121,9 @@ class EndpointController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws JsonException
+     */
     #[Route("captchadelete/", name: "captcha-delete", methods: ["POST"])]
     public function captchaDeleteEndpoint(Request $request, EndpointUtil $endpointUtil): Response
     {
@@ -138,5 +142,12 @@ class EndpointController extends AbstractController
         }
 
         return $this->render("empty.html.twig");
+    }
+
+    #[Route("prvnt/{timestamp}", name: "prvnt-update", methods: ["GET"])]
+    public function prvntUpdate(Request $request, $timestamp = null){
+        if($timestamp === null){
+
+        }
     }
 }

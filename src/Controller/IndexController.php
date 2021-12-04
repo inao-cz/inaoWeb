@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use App\Util\EndpointUtil;
 use App\Util\MailUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,11 +20,12 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @param $image
+     * @param EndpointUtil $util
+     * @param null $image
      * @return Response
      */
     #[Route(path: '/image/{image}', name: 'index-image-render')]
-    public function renderImageAction($image = null)
+    public function renderImageAction(EndpointUtil $util, $image = null): Response
     {
         if(!$image){
             exit();
@@ -39,21 +41,9 @@ class IndexController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             exit("Image doesn't exist");
         }
-        $dataType = $this->getDataType($image->getExt());
+        $dataType = $util->getDataType($image->getExt());
         $url = "https://img.inao.xn--6frz82g/" . $image->getUploaded()->format("Y/m/") . $image->getUser()->getUsername() . "/" . $image->getName() . "." . $image->getExt();
         return $this->render('image/view.html.twig', ['data' => $url, 'type' => $dataType]);
     }
 
-    private function getDataType(string $ext){
-        $extensions = [
-            'image' => ["jpg", "jpeg", "jfif", "jfif", "pjpeg", "pjp", "mpeg", "png", "gif"],
-            'text' => ["txt", "php", "html", "csv", "css", "xml"]
-        ];
-        foreach($extensions as $key => $row){
-            if(in_array($ext, $row)){
-                return $key;
-            }
-        }
-        return "image";
-    }
 }

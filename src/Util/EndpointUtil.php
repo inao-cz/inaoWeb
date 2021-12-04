@@ -29,4 +29,17 @@ class EndpointUtil
         $response->setStatusCode(403);
         return $response;
     }
+
+    public function getDataType(string $ext){
+        $extensions = [
+            'image' => ["jpg", "jpeg", "jfif", "jfif", "pjpeg", "pjp", "mpeg", "png", "gif"],
+            'text' => ["txt", "php", "html", "csv", "css", "xml"]
+        ];
+        foreach($extensions as $key => $row){
+            if(in_array($ext, $row)){
+                return $key;
+            }
+        }
+        return "image";
+    }
 }
