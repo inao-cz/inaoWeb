@@ -1,0 +1,15 @@
+{% macro drawerItem(name, url, icon) %}
+    {% apply spaceless %}
+        {% set subitems = subitems|default({}) %}
+        {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+        {% set isActive = currentUrl == url %}
+
+        {% for name, suburl in subitems %}
+            {% set isActive = not isActive and currentUrl == suburl %}
+        {% endfor %}
+
+        <a class="list-item {% if isActive %}active{% endif %}" {% if isActive%}style="color: white;" {% endif%} {% if not isActive and url|length > 0 %}href="{{ url }}"{% endif %}>
+            {% if icon|length > 0 %}{{ icon|raw }}{% endif %} {{ name|trans() }}
+        </a>
+    {% endapply %}
+{% endmacro %}

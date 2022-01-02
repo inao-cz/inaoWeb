@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redirect{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {{ form_start(redirectForm) }}
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div>
+                    <label class="textfield filled">
+                        {{ form_widget(redirectForm.name, {'attr': {'style': 'color: white;'}}) }}
+                        <span>Name</span>
+                    </label>
+                    <br><br>
+                </div>
+                <div>
+                    <label class="textfield filled">
+                        {{ form_widget(redirectForm.target, {'attr': {'style': 'color: white;'}}) }}
+                        <span>Target</span>
+                    </label>
+                    <br><br>
+                </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <label class="checkbox">
+                        {{ form_widget(redirectForm.public) }}
+                        <span>Public?</span>
+                    </label>
+                {% endif %}
+                <br>
+                <div class="col-8 offset-2 justify-content-center text-center">
+                    {{ form_row(redirectForm.submit, {'attr': {'class': 'btn'}}) }}
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+        {{ form_end(redirectForm) }}
+    </div>
+{% endblock %}

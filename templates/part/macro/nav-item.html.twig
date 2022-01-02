@@ -1,0 +1,19 @@
+{% macro menuItem(name, url, subitems) %}
+    {% apply spaceless %}
+        {% set subitems = subitems|default({}) %}
+        {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+        {% set isActive = currentUrl == url %}
+
+        {% for name, suburl in subitems %}
+            {% set isActive = not isActive and currentUrl == suburl %}
+        {% endfor %}
+
+        <a class="btn hide-on-mobile text ripple-ready color-dark-1 {% if isActive %}active{% endif %}"
+           {% if not isActive %}href="{{ url }}"{% endif %}{% if subitems|length > 0 %} {% endif %}>{{ name|trans() }}</a>
+        {% if subitems|length > 0 %}
+            {% for name, url in subitems %}
+                {{ _self.menuItem(name, url) }}
+            {% endfor %}
+        {% endif %}
+    {% endapply %}
+{% endmacro %}

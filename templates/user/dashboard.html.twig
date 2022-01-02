@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.dash'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="justify-content-center text-white">
+        <div class="text-center">
+            <h5>Welcome {{ username }}</h5>
+            <p>Your API Key is <span class="blue-text">{{ apiKey }}</span></p>
+        </div>
+        <br>
+        <div class="text-center">
+            <p>Last 10 actions on your API Key</p>
+        </div>
+        {% if activities is defined %}
+            <div class="row">
+                <div class="col-10 offset-1 text-center justify-content-center">
+                    <table class="table table-borderless text-white">
+                        <thead>
+                            <tr>
+                                <th scope="col">{{ 'user.dash.date'|trans }}</th>
+                                <th scope="col">{{ 'user.dash.action'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in activities %}
+                                <tr>
+                                    <th scope="col">{{ log.date|date("d/m/Y") }}</th>
+                                    <td>{{ log.action }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center"><b>No activity.</b></p>
+        {% endif %}
+    </div>
+{% endblock %}

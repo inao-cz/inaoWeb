@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Config{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-4 offset-4 justify-content-center">
+            <p>For image uploading, use ShareX. Please copy config down below and paste it into ShareX settings from your clipboard :)</p>
+        </div>
+        <div class="col-4 offset-4 justify-content-center">
+            <textarea rows="5" cols="70">{{ config }}</textarea>
+        </div>
+    </div>
+{% endblock %}

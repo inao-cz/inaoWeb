@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.redirect'|trans }}
+{% endblock %}
+
+{% block stylesheet %}
+    <style>
+        tr:hover {
+            background-color: transparent !important;
+        }
+
+        .text {
+            text-align: center;
+        }
+
+        .table-container {
+            background-color: #212121;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="text">
+        <div>
+            <h4>Welcome to the inao redirect.</h4>
+        </div>
+        <div>
+            <p>Here you will find public redirects</p>
+        </div>
+    </div>
+    <br>
+    <div class="col-8 offset-2">
+        <table class="table-container borderless small">
+            <thead>
+            <tr>
+                <th>Link ID</th>
+                <th>Creator</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="bg-dark">
+            {% for linkObj in links %}
+                <tr>
+                    <td>{{ linkObj.name }}</td>
+                    <td>{{ linkObj.owner.username }}</td>
+                    <td><a class="btn btn-link btn-primary"
+                           href="{{ path('links-go', {'id': linkObj.name }) }}" target="_blank">Open</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

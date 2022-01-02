@@ -1,0 +1,15 @@
+{% import 'part/macro/nav-item.html.twig' as macro %}
+<div class="appbar elevation- primary bg-dark-7 color-dark-1" id="appbar">
+        <div class=left">
+                <span class="title">inao.</span>
+            {{ macro.menuItem('title.index', path('index')) }}
+            {{ macro.menuItem('title.redirect', path('links-index')) }}
+        </div>
+        <div class="right">
+            {% if not app.user %}
+                {{ macro.menuItem('title.login', path('security-login')) }}
+            {% else %}
+                <button data-trigger="drawer" data-drawer="#drawer">User navigation</button>
+            {% endif %}
+        </div>
+</div>
