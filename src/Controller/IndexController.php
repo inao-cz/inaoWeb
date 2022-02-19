@@ -4,15 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Util\EndpointUtil;
-use App\Util\MailUtil;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route(path: '/', name: 'index')]
     public function index() : Response
     {
@@ -46,4 +52,11 @@ class IndexController extends AbstractController
         return $this->render('image/view.html.twig', ['data' => $url, 'type' => $dataType]);
     }
 
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
+    }
 }

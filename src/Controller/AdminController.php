@@ -40,4 +40,9 @@ class AdminController extends AbstractController
 
         return $this->renderForm('admin/invite.html.twig', ['form' => $form]);
     }
+
+    public function qruserCreate(Request $request): Response
+    {
+
+    }
 }

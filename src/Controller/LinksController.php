@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Links;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/link', name: 'links-')]
 class LinksController extends AbstractController
 {
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route(path: '/', name: 'index')]
     public function index() : Response
     {
@@ -39,14 +47,26 @@ class LinksController extends AbstractController
         if(is_null($results)){
             return $this->render('links/redirect.html.twig', ['message'=>"Invalid ID provided. :(", 'script' => ""]);
         }
-        $script = 'window.onload = (function(){
+        if(str_starts_with($results->getCreator(), 'qr_')){
+            $script = 'window.location.replace("' . $results->getTarget() . '")';
+        }else{
+            $script = 'window.onload = (function(){
                setTimeout(function () {
                 window.location.replace("' . $results->getTarget() . '")
                }, 3000)
         });';
+        }
         $results->addRedirect();
         $doc->getManager()->persist($results);
         $doc->getManager()->flush();
         return $this->render('links/redirect.html.twig', ['message' => "Redirecting to location.", 'script' => base64_encode($script)]);
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
     }
 }

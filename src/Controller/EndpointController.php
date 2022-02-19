@@ -8,6 +8,7 @@ use App\Entity\Image;
 use App\Entity\Log;
 use App\Util\EndpointUtil;
 use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,6 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/endpoint/", name: "endpoint-")]
 class EndpointController extends AbstractController
 {
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route('image', name: "image", methods: ["GET","POST"])]
     public function imgEndpoint(Request $request, EndpointUtil $endpointUtil): Response
     {
@@ -149,5 +157,13 @@ class EndpointController extends AbstractController
         if($timestamp === null){
 
         }
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
     }
 }

@@ -1,5 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block content %}
+{% block title %}QR Admin{% endblock %}
 
+{% block content %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            {{ form_start(redForm) }}
+            <div class="row">
+                <div class="textfield border-bottom">
+                    <label class="textfield filled">
+                        {{ form_widget(redForm.name, {'attr': {'style': 'color: white;', 'readonly':'readonly'}}) }}
+                        <span style="color: white">Redirect name (Locked)</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="textfield border-bottom">
+                    <label class="textfield filled">
+                        {{ form_widget(redForm.target, {'attr': {'style': 'color: white;'}}) }}
+                        <span style="color: white">Target</span>
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div class="row text-center">
+                <p class="text-white">Redirects</p>
+                <h5 class="text-white">{{ redirects }}</h5>
+            </div>
+            <br>
+            <div class="row">
+                {{ form_widget(redForm.submit) }}
+            </div>
+            {{ form_end(redForm) }}
+            <br>
+            <div class="row">
+                <div class="center">
+                    <div id="qr"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script>
+    window.addEventListener('load', () => {
+        new QRCode(document.getElementById("qr"), {
+            text: "{{ redUrl }}",
+            width: 256,
+            height: 256,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        })
+    });
+</script>
 {% endblock %}

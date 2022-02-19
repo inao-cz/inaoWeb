@@ -10,6 +10,7 @@ use App\Form\RecaptchaType;
 use App\Form\RegistrationType;
 use App\Util\UserUtil;
 use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils) : Response
     {
@@ -104,5 +112,13 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
             'solved' => $captcha->isCaptcha()
         ]);
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
     }
 }

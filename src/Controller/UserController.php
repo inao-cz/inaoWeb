@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\ApiKey;
 use App\Entity\Invite;
 use App\Entity\Log;
-use App\Entity\User;
 use App\Form\InviteType;
 use App\Util\EndpointUtil;
 use App\Util\MailUtil;
+use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/user', name: 'user-'), IsGranted("IS_AUTHENTICATED_FULLY")]
 class UserController extends AbstractController
 {
+    private ManagerRegistry $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route(path: '/', name: 'index')]
     public function index() : RedirectResponse
     {
@@ -48,11 +56,11 @@ class UserController extends AbstractController
     /**
      * @return Response
      */
-    #[Route(path: '/invite/', name: 'invite'), IsGranted("ROLE_INVITE")]
+    #[Route(path: '/invite/', name: 'invite'), IsGranted(["ROLE_INVITE"])]
     public function inviteUserAction(Request $request, EndpointUtil $endpointUtil, MailUtil $mailUtil)
     {
         $invite = new Invite();
-        $invite->setCode($endpointUtil->randomString())->setValidUntil((new \DateTime('+12 hours')));
+        $invite->setCode($endpointUtil->randomString())->setValidUntil((new DateTime('+12 hours')));
         $form = $this->createForm(InviteType::class, $invite);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,9 +87,17 @@ class UserController extends AbstractController
         return $this->render('image/config.html.twig', ['config' => '{"Version":"13.1.0","Name":"inaoImageService","DestinationType":"ImageUploader","RequestMethod":"POST","RequestURL":"https://inao.xn--6frz82g/endpoint/image","Body":"MultipartFormData","Arguments":{"key": "' . $apiKey->getApiKey() . '"},"FileFormName": "sharex","URL": "https://inao.xn--6frz82g$response$"}']);
     }
 
-    #[Route(path: '/image/list', name: 'image-list'), IsGranted("ROLE_IMAGES")]
-    public function viewImagesList(Request $request){
+    #[Route(path: '/image/list', name: 'image-list'), IsGranted(["ROLE_IMAGES"])]
+    public function viewImagesList(){
 
         return $this->render('image/list.html.twig');
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->doctrine;
     }
 }
