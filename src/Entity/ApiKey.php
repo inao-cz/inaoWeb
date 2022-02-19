@@ -7,19 +7,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ApiKeyRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=ApiKeyRepository::class)
+ */
 class ApiKey
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: "string", length: 254)]
-    private string $apiKey;
+    /**
+     * @ORM\Column(type="string", length=254)
+     */
+    private $apiKey;
 
-    #[ORM\OneToOne(inversedBy: "apiKey", targetEntity: User::class, cascade: ["persist", "remove"])]
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="apiKey", cascade={"persist", "remove"})
+     */
     private $user;
 
-    #[ORM\OneToMany(mappedBy: "apiKey", targetEntity: Log::class)]
+    /**
+     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="apiKey")
+     */
     private $logs;
 
     public function __construct()
@@ -57,7 +69,7 @@ class ApiKey
     }
 
     /**
-     * @return Collection
+     * @return Collection|Log[]
      */
     public function getLogs(): Collection
     {

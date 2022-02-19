@@ -6,20 +6,33 @@ use App\Repository\LogRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LogRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=LogRepository::class)
+ */
 class Log
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: "datetime")]
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $date;
 
-    #[ORM\Column(type: "text")]
-    private string $action;
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $action;
 
-    #[ORM\ManyToOne(targetEntity: ApiKey::class, inversedBy: "logs"), ORM\JoinColumn(nullable: false)]
-    private ApiKey $apiKey;
+    /**
+     * @ORM\ManyToOne(targetEntity=ApiKey::class, inversedBy="logs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $apiKey;
 
     public function getId(): ?int
     {

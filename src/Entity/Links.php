@@ -5,26 +5,42 @@ namespace App\Entity;
 use App\Repository\LinksRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LinksRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=LinksRepository::class)
+ */
 class Links
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: "text")]
+    /**
+     * @ORM\Column(type="text")
+     */
     private ?string $name;
 
-    #[ORM\Column(type: "text")]
+    /**
+     * @ORM\Column(type="text")
+     */
     private ?string $target;
 
-    #[ORM\Column(type: "boolean", nullable: true)]
-    private ?bool $public;
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $public;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private string $creator;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $creator;
 
-    #[ORM\Column(type: "integer")]
-    private int $redirects;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $redirects;
 
     public function getId(): ?int
     {
@@ -80,9 +96,9 @@ class Links
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getRedirects(): int
+    public function getRedirects()
     {
         return $this->redirects;
     }
@@ -90,13 +106,13 @@ class Links
     /**
      * @param mixed $redirects
      */
-    public function setRedirects(int $redirects): void
+    public function setRedirects($redirects): void
     {
         $this->redirects = $redirects;
     }
 
     public function addRedirect(): void
     {
-        ++$this->redirects;
+        $this->redirects += 1;
     }
 }

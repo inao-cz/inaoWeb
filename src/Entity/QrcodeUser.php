@@ -35,6 +35,12 @@ class QrcodeUser implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Links::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $redirect;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,5 +128,17 @@ class QrcodeUser implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getRedirect(): ?Links
+    {
+        return $this->redirect;
+    }
+
+    public function setRedirect(Links $redirect): self
+    {
+        $this->redirect = $redirect;
+
+        return $this;
     }
 }

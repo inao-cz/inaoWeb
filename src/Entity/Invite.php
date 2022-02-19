@@ -6,31 +6,47 @@ use App\Repository\InviteRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InviteRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=InviteRepository::class)
+ */
 class Invite
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
     /**
      * @var mixed
+     * @ORM\Column(type="string", length=128)
      */
-    #[ORM\Column(type: "string", length: 128)]
     private $code;
 
-    #[ORM\OneToOne(targetEntity: User::class, cascade: ["persist", "remove"])]
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
     private $user;
 
-    #[ORM\Column(type: "datetime")]
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $validUntil;
 
-    #[ORM\Column(type: "json", nullable: true)]
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
     private $roles = [];
 
-    #[ORM\Column(type: "text")]
+    /**
+     * @ORM\Column(type="text")
+     */
     private $email;
 
-    #[ORM\OneToOne(targetEntity: User::class, cascade: ["persist", "remove"])]
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     */
     private $usedBy;
 
     /**

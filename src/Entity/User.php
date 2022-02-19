@@ -10,34 +10,61 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @method string getUserIdentifier()
+ */
 class User implements UserInterface
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
-    private int $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    private $id;
 
-    #[ORM\Column(type: "string", length: 180, unique: true), Assert\NotBlank]
-    private string $username;
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\NotBlank
+     */
+    private $username;
 
-    #[ORM\Column(type: "json")]
-    private array $roles = [];
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
-    #[ORM\Column(type: "string"), Assert\NotBlank]
-    private string $password;
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank
+     */
+    private $password;
 
-    #[ORM\Column(type: "string"), Assert\Email, Assert\NotNull, Assert\NotBlank]
-    private string $email;
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     *
+     * @Assert\Email
+     * @Assert\NotNull
+     * @Assert\NotBlank
+     */
+    private $email;
 
-    #[ORM\Column(type: "integer")]
-    private int $inviteLimit = 0;
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $images;
 
-    #[ORM\OneToMany(mappedBy: "user", targetEntity: Image::class, cascade: ["persist", "remove"], orphanRemoval: true)]
-    private ArrayCollection $images;
+    /**
+     * @ORM\OneToOne(targetEntity=ApiKey::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $apiKey;
 
-    #[ORM\OneToOne(mappedBy: "user", targetEntity: ApiKey::class, cascade: ["persist", "remove"])]
-    private ApiKey $apiKey;
-
-    #[Pure] public function __construct()
+    public function __construct()
     {
         $this->images = new ArrayCollection();
     }
@@ -78,7 +105,6 @@ class User implements UserInterface
 
     /**
      * @param $roles
-     * @return User
      */
     public function setRoles($roles): self
     {
@@ -132,9 +158,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return ApiKey
+     * @return mixed
      */
-    public function getApiKey(): ApiKey
+    public function getApiKey()
     {
         return $this->apiKey;
     }
@@ -142,13 +168,13 @@ class User implements UserInterface
     /**
      * @param mixed $apiKey
      */
-    public function setApiKey(string $apiKey): void
+    public function setApiKey($apiKey): void
     {
         $this->apiKey = $apiKey;
     }
 
     /**
-     * @return Collection
+     * @return Collection|Image[]
      */
     public function getImages(): Collection
     {
@@ -178,4 +204,8 @@ class User implements UserInterface
         return $this;
     }
 
+    public function __call(string $name, array $arguments)
+    {
+        return $this->getUsername();
+    }
 }

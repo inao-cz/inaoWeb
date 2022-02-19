@@ -6,23 +6,38 @@ use App\Repository\ImageRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=ImageRepository::class)
+ */
 class Image
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "images"), ORM\JoinColumn(nullable: false)]
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
+     */
     private $user;
 
-    #[ORM\Column(type: "date")]
+    /**
+     * @ORM\Column(type="date")
+     */
     private $uploaded;
 
-    #[ORM\Column(type: "string", length: 255)]
-    private string $name;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
 
-    #[ORM\Column(type: "string", length: 10)]
-    private string $ext;
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $ext;
 
     public function getId(): ?int
     {
