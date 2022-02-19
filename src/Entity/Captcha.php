@@ -6,26 +6,16 @@ use App\Repository\CaptchaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
-/**
- * @ORM\Entity(repositoryClass=CaptchaRepository::class)
- */
+#[ORM\Entity(repositoryClass: CaptchaRepository::class)]
 class Captcha
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="bigint")
-     */
+    #[ORM\Id, ORM\Column(type: "bigint")]
     private $discordId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $captchaId;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $captcha = false;
 
     /**

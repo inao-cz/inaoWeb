@@ -19,18 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class UserController
  * @package App\Controller
- * @IsGranted("IS_AUTHENTICATED_FULLY")
  */
-#[Route(path: '/user', name: 'user-')]
+#[Route(path: '/user', name: 'user-'), IsGranted("IS_AUTHENTICATED_FULLY")]
 class UserController extends AbstractController
 {
-    #[Route(path: '/', name: 'index'), IsGranted("IS_AUTHENTICATED_FULLY")]
+    #[Route(path: '/', name: 'index')]
     public function index() : RedirectResponse
     {
         return $this->redirectToRoute('user-dashboard-index');
     }
 
-    #[Route(path: '/dash/', name: 'dashboard-index'), IsGranted("IS_AUTHENTICATED_FULLY")]
+    #[Route(path: '/dash/', name: 'dashboard-index')]
     public function dashboardAction() : Response
     {
         $history = $this->getDoctrine()->getRepository(Log::class)->getHistory($this->getUser()->getApiKey());
@@ -49,7 +48,7 @@ class UserController extends AbstractController
     /**
      * @return Response
      */
-    #[Route(path: '/invite/', name: 'invite'), Security("is_granted('ROLE_FULLY_AUTHENTICATED') and is_granted('ROLE_INVITE')")]
+    #[Route(path: '/invite/', name: 'invite'), IsGranted("ROLE_INVITE")]
     public function inviteUserAction(Request $request, EndpointUtil $endpointUtil, MailUtil $mailUtil)
     {
         $invite = new Invite();
