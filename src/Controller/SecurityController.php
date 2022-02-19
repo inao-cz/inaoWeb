@@ -30,7 +30,7 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security_user/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/logout', name: 'logout')]
@@ -100,7 +100,7 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
         }
-        return $this->render('security/captcha.html.twig', [
+        return $this->render('security_user/captcha.html.twig', [
             'form' => $form->createView(),
             'solved' => $captcha->isCaptcha()
         ]);

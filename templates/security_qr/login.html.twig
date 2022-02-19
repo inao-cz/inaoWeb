@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.login'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="card" style="background-color: #212121">
+                <div class="card-content">
+                    <div class="center" style="text-align: center">
+                        <form method="post">
+                            {% if error %}
+                                <div class="bg-gray-800 text-center py-4 lg:px-4">
+                                    <span class="font-semibold text-white-700 mr-2 text-left flex-auto">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                                </div>
+                            {% endif %}
+                            {% if app.user %}
+                                <div class="mb-3">
+                                    You are logged in as {{ app.user.userIdentifier }}, <a
+                                            href="{{ path('logout') }}">Logout</a>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <label class="textfield filled">
+                                    <input type="text" value="{{ last_username }}" name="uuid" id="inputUuid" required autofocus style="color: white">
+                                    <span style="color: white">UUID</span>
+                                </label>
+                            </div>
+                            <div class="row">
+                                <label class="textfield filled">
+                                    <input type="password" name="password" id="inputPassword" required placeholder="" style="color: white">
+                                    <span style="color: white;">Password</span>
+                                </label>
+                            </div>
+                            <input type="hidden" name="_csrf_token"
+                                   value="{{ csrf_token('authenticate') }}"
+                            >
+                            <br>
+                            <button class="btn" type="submit">
+                                Sign in
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

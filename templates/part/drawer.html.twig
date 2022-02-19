@@ -1,10 +1,12 @@
 {% import 'part/macro/drawer-item.html.twig' as macro %}
 <div class="drawer-overlay" id="drawer" style="color: white;">
     <div class="drawer modal" style="background-color: #757575; color: white;">
-        <h3>Welcome {{ app.user.username }}</h3>
+        <h3>Welcome {{ app.user.userIdentifier }}</h3>
         <p>User Navigation</p>
         <nav class="list small" style="background-color: #757575; color: white !important;">
-            {{ macro.drawerItem("title.dash", path('user-dashboard-index'), "<i class='fas fa-portal-exit'></i>") }}
+            {% if not isQrUser(app.user) %}
+                {{ macro.drawerItem("title.dash", path('user-dashboard-index'), "<i class='fas fa-portal-exit'></i>") }}
+            {% endif %}
             {% if is_granted('ROLE_INVITE') %}
                 {{ macro.drawerItem("title.admin.invite", path('user-invite'), "<i class='fas fa-address-book'></i>") }}
             {% endif %}

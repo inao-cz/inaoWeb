@@ -36,7 +36,6 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $invite->setRoles(array_values($form->get('groups')->getData()));
-            dump($invite);
         }
 
         return $this->renderForm('admin/invite.html.twig', ['form' => $form]);
