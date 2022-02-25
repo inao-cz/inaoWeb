@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin QR Users{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            {{ form_start(qrform) }}
+            <div class="row">
+                <div class="textfield border-bottom">
+                    <label class="textfield filled">
+                        {{ form_widget(qrform.uuid, {'attr': {'style': 'color: white;', 'readonly':'readonly'}}) }}
+                        <span style="color: white">UUID</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="textfield border-bottom">
+                    <label class="textfield filled">
+                        {{ form_widget(qrform.password, {'attr': {'style': 'color: white;'}}) }}
+                        <span style="color: white">Password</span>
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                {{ form_widget(qrform.submit) }}
+            </div>
+            {{ form_end(qrform) }}
+            <br>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

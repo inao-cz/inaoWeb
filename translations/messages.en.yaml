@@ -4,9 +4,11 @@ title:
   redirect: Redirect
   register: Register
   login: Login
+  qr: QR Login
   admin:
     invite: Invites
     image: Screenshots
+    qr: QR Services users
   user:
     services: Services
 nav.items:

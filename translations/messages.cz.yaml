@@ -4,9 +4,11 @@ title:
   redirect: Redirect
   register: Register
   login: Login
+  qr: QR Login
   admin:
     invite: Pozvánky
     images: Screenshot
+    qr: Uživatelé služeb QR
   user:
     services: Služby
 nav.items:

@@ -5,19 +5,22 @@
         <p>User Navigation</p>
         <nav class="list small" style="background-color: #757575; color: white !important;">
             {% if not isQrUser(app.user) %}
-                {{ macro.drawerItem("title.dash", path('user-dashboard-index'), "<i class='fas fa-portal-exit'></i>") }}
+                {{ macro.drawerItem("title.dash", path('user-dashboard-index'), "<i class='fa fa-user-tie'></i>") }}
             {% endif %}
             {% if is_granted('ROLE_INVITE') %}
-                {{ macro.drawerItem("title.admin.invite", path('user-invite'), "<i class='fas fa-address-book'></i>") }}
+                {{ macro.drawerItem("title.admin.invite", path('user-invite'), "<i class='fa fa-address-book'></i>") }}
+            {% endif %}
+            {% if is_granted('ROLE_QR_ADMIN') %}
+                {{ macro.drawerItem("title.admin.qr", path('admin-qr'), "<i class='fa fa-qrcode'></i>") }}
             {% endif %}
             {% if is_granted('ROLE_IMAGES') %}
             <hr>
-            {{ macro.drawerItem("user.image.list", path('user-image-list'), "<i class='fas fa-list-alt'></i>") }}
-            {{ macro.drawerItem("user.image.config", path('user-invite'), "<i class='fas fa-shovel'></i>") }}
+            {{ macro.drawerItem("user.image.list", path('user-image-list'), "<i class='fa fa-list-alt'></i>") }}
+            {{ macro.drawerItem("user.image.config", path('user-invite'), "<i class='fa fa-gear'></i>") }}
             {% endif %}
             <hr>
-            <a class="list-item" data-trigger="drawer" data-drawer="#drawer"><i class="fas fa-times"></i> Close the navigation</a>
-            {{ macro.drawerItem("nav.items.logout", path('logout'), "<i class='fas fa-portal-exit'></i>") }}
+            <a class="list-item" data-trigger="drawer" data-drawer="#drawer"><i class="fa fa-times"></i> Close the navigation</a>
+            {{ macro.drawerItem("nav.items.logout", path('logout'), "<i class='fa-solid fa-right-from-bracket'></i>") }}
         </nav>
     </div>
 </div>

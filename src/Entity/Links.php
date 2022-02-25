@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LinksRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LinksRepository::class)
@@ -24,6 +25,8 @@ class Links
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Assert\NotNull
      */
     private ?string $target;
 

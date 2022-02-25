@@ -30,7 +30,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\QrcodeUserAuthenticator
-                entry_point: App\Security\QrcodeUserAuthenticator
             logout:
                 path: controller-qr-logout
                 target: index
@@ -61,6 +60,6 @@ security:
          - { path: ^/user/invite, role: ROLE_INVITE }
 
     role_hierarchy:
-        ROLE_ALL_SERVICES: [ROLE_LINKS, ROLE_IMAGES, ROLE_INVITE]
+        ROLE_ADMIN: [ROLE_ALL_SERVICES, ROLE_QR_ADMIN]
         ROLE_VIP: ROLE_ALL_SERVICES
-        ROLE_ADMIN: ROLE_ALL_SERVICES
+        ROLE_ALL_SERVICES: [ROLE_LINKS, ROLE_IMAGES, ROLE_INVITE]

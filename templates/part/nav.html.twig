@@ -11,6 +11,7 @@
         <ul class="appbar-items appbar-item--end">
             {% if not app.user %}
                 {{ macro.menuItem('title.login', path('login')) }}
+                {{ macro.menuItem('title.qr', path('controller-qr-login')) }}
             {% else %}
                 <button data-trigger="drawer" data-drawer="#drawer">User navigation</button>
             {% endif %}
