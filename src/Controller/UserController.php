@@ -56,7 +56,7 @@ class UserController extends AbstractController
     /**
      * @return Response
      */
-    #[Route(path: '/invite/', name: 'invite'), IsGranted(["ROLE_INVITE"])]
+    #[Route(path: '/invite/', name: 'invite'), IsGranted("ROLE_INVITE")]
     public function inviteUserAction(Request $request, EndpointUtil $endpointUtil, MailUtil $mailUtil)
     {
         $invite = new Invite();
@@ -87,7 +87,7 @@ class UserController extends AbstractController
         return $this->render('image/config.html.twig', ['config' => '{"Version":"13.1.0","Name":"inaoImageService","DestinationType":"ImageUploader","RequestMethod":"POST","RequestURL":"https://inao.xn--6frz82g/endpoint/image","Body":"MultipartFormData","Arguments":{"key": "' . $apiKey->getApiKey() . '"},"FileFormName": "sharex","URL": "https://inao.xn--6frz82g$response$"}']);
     }
 
-    #[Route(path: '/image/list', name: 'image-list'), IsGranted(["ROLE_IMAGES"])]
+    #[Route(path: '/image/list', name: 'image-list'), IsGranted("ROLE_IMAGES")]
     public function viewImagesList(){
 
         return $this->render('image/list.html.twig');

@@ -13,10 +13,11 @@ use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -51,7 +52,7 @@ class SecurityController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/register/{invite}', name: 'register')]
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, UserUtil $util, $invite = null) : Response
+    public function register(Request $request, UserPasswordHasherInterface $hasher, UserUtil $util, $invite = null) : Response
     {
         if(!$invite){
             return $this->redirectToRoute('index');
@@ -76,7 +77,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+            $user->setPassword($hasher->hashPassword($user, $user->getPassword()));
             $user->setRoles($invite->getRoles());
             $apiKey = new ApiKey();
             $apiKey->setUser($user)->setApiKey($util->getRandomApiKey());
@@ -94,7 +95,7 @@ class SecurityController extends AbstractController
         ]);
     }
     #[Route(path: '/captcha/{id}', name: 'security-captcha')]
-    public function onCaptchaRequest(Request $request, $id)
+    public function onCaptchaRequest(Request $request, $id): RedirectResponse|Response
     {
         $captcha = $this->getDoctrine()->getRepository(Captcha::class)->findOneBy(['captchaId' => $id]);
         if($captcha === null) {

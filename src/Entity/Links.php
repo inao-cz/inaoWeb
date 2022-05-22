@@ -6,44 +6,30 @@ use App\Repository\LinksRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=LinksRepository::class)
- */
+#[ORM\Entity(repositoryClass: LinksRepository::class)]
 class Links
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private ?string $name;
+    #[ORM\Column(type: "text")]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank
-     * @Assert\NotNull
-     */
-    private ?string $target;
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank, Assert\NotNull]
+    private string $target;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $public;
+    #[ORM\Column(type: "boolean", nullable: true)]
+    private ?bool $public;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $creator;
+    #[ORM\Column(type: "string", length: 255)]
+    private string $creator;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $redirects;
+    #[ORM\Column(type: "integer")]
+    private int $redirects;
 
     public function getId(): ?int
     {
@@ -98,24 +84,18 @@ class Links
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRedirects()
+    public function getRedirects(): int
     {
         return $this->redirects;
     }
 
-    /**
-     * @param mixed $redirects
-     */
-    public function setRedirects($redirects): void
+    public function setRedirects(int $redirects): void
     {
         $this->redirects = $redirects;
     }
 
     public function addRedirect(): void
     {
-        $this->redirects += 1;
+        ++$this->redirects;
     }
 }

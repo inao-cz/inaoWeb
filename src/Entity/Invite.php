@@ -3,69 +3,44 @@
 namespace App\Entity;
 
 use App\Repository\InviteRepository;
-use DateTimeInterface;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=InviteRepository::class)
- */
+#[ORM\Entity(repositoryClass: InviteRepository::class)]
 class Invite
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @var mixed
-     * @ORM\Column(type="string", length=128)
-     */
-    private $code;
+    #[ORM\Column(type: "string", length: 128)]
+    private string $code;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     */
-    private $user;
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ["persist", "remove"])]
+    private User $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $validUntil;
+    #[ORM\Column(type: "datetime")]
+    private DateTime $validUntil;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $roles = [];
+    #[ORM\Column(type: "json", nullable: true)]
+    private array $roles = [];
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $email;
+    #[ORM\Column(type: "text")]
+    private mixed $email;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     */
-    private $usedBy;
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ["persist", "remove"])]
+    private ?User $usedBy;
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @param $code
-     */
-    public function setCode($code): self
+    public function setCode(string $code): self
     {
         $this->code = $code;
 
@@ -73,43 +48,43 @@ class Invite
     }
 
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getValidUntil(): ?DateTimeInterface
+    public function getValidUntil(): DateTime
     {
         return $this->validUntil;
     }
 
-    public function setValidUntil(DateTimeInterface $validUntil): self
+    public function setValidUntil(DateTime $validUntil): self
     {
         $this->validUntil = $validUntil;
 
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function setRoles(?array $roles): self
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }

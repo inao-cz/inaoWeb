@@ -6,35 +6,24 @@ use App\Repository\ApiKeyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * @ORM\Entity(repositoryClass=ApiKeyRepository::class)
- */
+#[ORM\Entity(repositoryClass: ApiKeyRepository::class)]
 class ApiKey
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=254)
-     */
+    #[ORM\Column(type: "string", length: 254)]
     private $apiKey;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="apiKey", cascade={"persist", "remove"})
-     */
-    private $user;
+    #[ORM\OneToOne(inversedBy: "apiKey", targetEntity: User::class, cascade: ["persist", "remove"])]
+    private User $user;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="apiKey")
-     */
-    private $logs;
+    #[ORM\OneToMany(mappedBy: "apiKey", targetEntity: Log::class)]
+    private Collection $logs;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->logs = new ArrayCollection();
     }
@@ -61,16 +50,13 @@ class ApiKey
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Log[]
-     */
     public function getLogs(): Collection
     {
         return $this->logs;
@@ -88,11 +74,8 @@ class ApiKey
 
     public function removeLog(Log $log): self
     {
-        if ($this->logs->removeElement($log)) {
-            // set the owning side to null (unless already changed)
-            if ($log->getApiKey() === $this) {
-                $log->setApiKey(null);
-            }
+        if ($this->logs->removeElement($log) && $log->getApiKey() === $this) {
+            $log->setApiKey(null);
         }
 
         return $this;

@@ -12,17 +12,17 @@
         </div>
     {% endif %}
     {% if solved %}
-        <div>
+        <div class="text-center">
             <h5 class="text-green-200 u-center">Captcha is solved. Please, return to the Discord client and react to message as said by the bot.</h5>
         </div>
     {% else %}
-        <div class="u-center">
             {{ form_start(form) }}
-            {{ form_widget(form.captcha) }}
+            <div style="margin: auto; display: flex; justify-content: center">
+                {{ form_widget(form.captcha) }}
+            </div>
             <div class="text-center">
                 {{ form_row(form.submit) }}
             </div>
             {{ form_end(form) }}
-        </div>
     {% endif %}
 {% endblock %}

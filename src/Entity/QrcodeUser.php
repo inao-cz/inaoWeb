@@ -7,39 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=QrcodeUserRepository::class)
- */
+#[ORM\Entity(repositoryClass: QrcodeUserRepository::class)]
 class QrcodeUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $uuid;
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    private string $uuid;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
+    #[ORM\Column(type: "string")]
+    private string $password;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Links::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $redirect;
+    #[ORM\OneToOne(targetEntity: Links::class, cascade: ["persist", "remove"]), ORM\JoinColumn(nullable: true)]
+    private Links $redirect;
 
     public function getId(): ?int
     {

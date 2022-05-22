@@ -15,11 +15,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class QrcodeUserAuthenticator extends AbstractLoginFormAuthenticator
+class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'controller-qr-login';
+    public const LOGIN_ROUTE = 'login';
 
     private UrlGeneratorInterface $urlGenerator;
 
@@ -28,24 +28,18 @@ class QrcodeUserAuthenticator extends AbstractLoginFormAuthenticator
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function supports(Request $request):bool
+    public function supports(Request $request): bool
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
-    public function authenticate(Request $request): Passport
+    /**
+     * Used to upgrade (rehash) the user's password automatically over time.
+     */
+    public function getPassword($credentials): ?string
     {
-        $uuid = $request->request->get('uuid', '');
-        $request->getSession()->set(Security::LAST_USERNAME, $uuid);
-
-        return new Passport(
-            new UserBadge($uuid),
-            new PasswordCredentials($request->request->get('password', '')),
-            [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token'))
-            ]
-        );
+        return $credentials['password'];
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -54,11 +48,25 @@ class QrcodeUserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('controller-qr-admin'));
+        return new RedirectResponse('/');
     }
 
-    protected function getLoginUrl(Request $request):string
+    protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    public function authenticate(Request $request): Passport
+    {
+        $username = $request->request->get('username', '');
+        $request->getSession()->set(Security::LAST_USERNAME, $username);
+
+        return new Passport(
+            new UserBadge($username),
+            new PasswordCredentials($request->request->get('password', '')),
+            [
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token'))
+            ]
+        );
     }
 }

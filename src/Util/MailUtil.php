@@ -4,43 +4,38 @@ namespace App\Util;
 
 error_reporting(E_ALL);
 
-use Psr\Container\ContainerInterface;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class MailUtil
 {
-    /** @var ContainerInterface $containerInterface */
-    private $containerInterface;
-    /** @var Swift_Mailer $swiftMailer */
-    private $swiftMailer;
     public const MAILER_FROM = "inao@inao.xn--6frz82g";
 
-    /**
-     * MailUtil constructor.
-     */
-    public function __construct(Swift_Mailer $swift_Mailer, ContainerInterface $containerInterface)
+    private MailerInterface $mailer;
+
+    public function __construct(MailerInterface $mailer)
     {
-        $this->containerInterface = $containerInterface;
-        $this->swiftMailer = $swift_Mailer;
+        $this->mailer = $mailer;
     }
 
-    /**
-     * @param string|null $link
-     */
     public function sendEmail(string $template, string $subject, string $to, string $link = null): bool
     {
         $completeTemplate = "mail/" . $template . ".html.twig";
 
-        $message = (new Swift_Message($subject))
-            ->setTo($to)
-            ->setFrom(self::MAILER_FROM)
-            ->setBody(
-                $this->containerInterface->get('twig')->render($completeTemplate, ['link' => $link]),
-                'text/html'
-            );
-        $fail = "";
-        $result = $this->swiftMailer->send($message, $fail);
-        return $result !== 0;
+        $message = (new TemplatedEmail())
+            ->to($to)
+            ->from(self::MAILER_FROM)
+            ->subject($subject)
+            ->htmlTemplate($completeTemplate)
+            ->context([
+                'link' => $link
+            ]);
+        try {
+            $this->mailer->send($message);
+            return true;
+        } catch (TransportExceptionInterface $e) {
+            return false;
+        }
     }
 }

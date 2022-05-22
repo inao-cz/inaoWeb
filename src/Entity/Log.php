@@ -3,36 +3,24 @@
 namespace App\Entity;
 
 use App\Repository\LogRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=LogRepository::class)
- */
+#[ORM\Entity(repositoryClass: LogRepository::class)]
 class Log
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
+    #[ORM\Column(type: "datetime")]
+    private DateTime $date;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $action;
+    #[ORM\Column(type: "text")]
+    private mixed $action;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ApiKey::class, inversedBy="logs")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $apiKey;
+    #[ORM\ManyToOne(targetEntity: ApiKey::class, inversedBy: "logs"), ORM\JoinColumn(nullable: false)]
+    private ApiKey $apiKey;
 
     public function getId(): ?int
     {
@@ -44,7 +32,7 @@ class Log
         return $this->date;
     }
 
-    public function setDate(DateTimeInterface $date): self
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 
@@ -63,12 +51,12 @@ class Log
         return $this;
     }
 
-    public function getApiKey(): ?ApiKey
+    public function getApiKey(): ApiKey
     {
         return $this->apiKey;
     }
 
-    public function setApiKey(?ApiKey $apiKey): self
+    public function setApiKey(ApiKey $apiKey): self
     {
         $this->apiKey = $apiKey;
 

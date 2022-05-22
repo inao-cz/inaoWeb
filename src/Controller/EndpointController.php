@@ -87,12 +87,14 @@ class EndpointController extends AbstractController
                 ]);
                 if($captcha === null){
                     $captcha = new Captcha();
+                    $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
+                    $captcha->setDiscordId($id);
+                    $captcha->setCaptchaId($endpointUtil->randomString());
+                    $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
+                    $captchaArray[] = $captcha;
+                }else{
+                    $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
                 }
-                $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
-                $captcha->setDiscordId($id);
-                $captcha->setCaptchaId($endpointUtil->randomString());
-                $response[$captcha->getDiscordId()] = $captcha->getCaptchaId();
-                $captchaArray[] = $captcha;
             }
             if (count($captchaArray) > 0) {
                 $em = $this->getDoctrine()->getManager();
@@ -153,7 +155,7 @@ class EndpointController extends AbstractController
     }
 
     #[Route("prvnt/{timestamp}", name: "prvnt-update", methods: ["GET"])]
-    public function prvntUpdate(Request $request, $timestamp = null){
+    public function prvntUpdate($timestamp = null){
         if($timestamp === null){
 
         }

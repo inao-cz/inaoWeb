@@ -6,57 +6,42 @@ use App\Repository\ImageRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ImageRepository::class)
- */
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "images"), ORM\JoinColumn(nullable: false)]
+    private User $user;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $uploaded;
+    #[ORM\Column(type: "date")]
+    private DateTime $uploaded;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: "string", length: 255)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $ext;
+    #[ORM\Column(type: "string", length: 10)]
+    private string $ext;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $User): self
+    public function setUser(User $User): self
     {
         $this->user = $User;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -68,18 +53,12 @@ class Image
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExt()
+    public function getExt(): string
     {
         return $this->ext;
     }
 
-    /**
-     * @param mixed $ext
-     */
-    public function setExt($ext): void
+    public function setExt(string $ext): void
     {
         $this->ext = $ext;
     }

@@ -33,7 +33,7 @@ class QrcodeAdminController extends AbstractController
     }
 
     #[Route(path: '/admin', name: "-admin")]
-    #[IsGranted(['ROLE_QR'])]
+    #[IsGranted('ROLE_QR')]
     public function adminIndex(Request $request)
     {
         if(!$this->isGranted('ROLE_QR')){
